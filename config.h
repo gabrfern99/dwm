@@ -35,10 +35,10 @@ typedef struct {
 } Sp;
 const char *spcmd1[] = { "alacritty", "--class", "spterm", "-e","tmux", NULL };
 const char *spcmd2[] = { "st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
-const char *spcmd3[] = { "sudo", "virt-manager", NULL };
+const char *spcmd3[] = { "virt-manager", NULL };
 const char *spcmd4[] = { "torbrowser-launcher", NULL };
 const char *spcmd5[] = { "st", "-n", "spnewsboat", "-f" "monospace:size=11", "-g", "120x20", "-e", "newsboat", NULL };
-const char *spcmd6[] = { "sudo", "wireshark", NULL };
+const char *spcmd6[] = { "wireshark", NULL };
 const char *spcmd7[] = { "alacritty", "--class", "spranger", "-e", "ranger", NULL };
 const char *spcmd8[] = { "alacritty", "--class", "spneo", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
