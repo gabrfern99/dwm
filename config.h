@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
@@ -15,14 +15,22 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=9", "NotoColorEmoji:pixelsize=9:antialias=true:autohint=true", "FontAwesome:pixelsize=9:antialias=true:autohint=true" };
+static const char *fonts[]          = { "monospace:size=9", "JoyPixels:pixelsize=9:antialias=true:autohint=true", "FontAwesome:pixelsize=9:antialias=true:autohint=true" };
 static char dmenufont[]       = "monospace:size=10";
-static char normbgcolor[]           = "#222222";
-static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#bbbbbb";
-static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#ffae00";  /* #005577 */
-static char selbgcolor[]            = "#ffae00";  /* #005577 */
+/* static char normbgcolor[]           = "#222222"; */
+/* static char normbordercolor[]       = "#444444"; */
+/* static char normfgcolor[]           = "#bbbbbb"; */
+/* static char selfgcolor[]            = "#eeeeee"; */
+/* static char selbordercolor[]        = "#ffae00"; #005577 */
+/* static char selbgcolor[]            = "#ffae00"; #005577 */
+
+static char normbordercolor[] = "#484848";
+static char normbgcolor[]     = "#000000";
+static char normfgcolor[]     = "#C40000";
+static char selbordercolor[]  = "#C40000";
+static char selbgcolor[]      = "#C40000";
+static char selfgcolor[]      = "#FFFFFF";
+
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -33,16 +41,17 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = { "alacritty", "--class", "spterm", "-e","tmux", NULL };
+const char *spcmd1[] = { "st", "-n", "spterm", "-e","tmux", NULL };
 const char *spcmd2[] = { "st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
 const char *spcmd3[] = { "virt-manager", NULL };
-const char *spcmd4[] = { "torbrowser-launcher", NULL };
+const char *spcmd4[] = { "torbrowser", NULL };
 const char *spcmd5[] = { "st", "-n", "spnewsboat", "-f" "monospace:size=11", "-g", "120x20", "-e", "newsboat", NULL };
 const char *spcmd6[] = { "wireshark", NULL };
 const char *spcmd7[] = { "rofi.sh", NULL };
-const char *spcmd8[] = { "alacritty", "--class", "spneo", "-e", "neomutt", NULL };
+const char *spcmd8[] = { "st", "-n", "spneo", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "cherrytree", NULL };
+
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -69,7 +78,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   isterminal noswallow monitor */
 	{ "St",       NULL,       NULL,       0,            0,           1,         0,        -1 },
-	{ NULL,       "Alacritty",       NULL,       0,            0,           1,         0,        -1 },
+	{ NULL,       "St",       NULL,       0,            0,           1,         0,        -1 },
 	{ "qutebrowser", NULL, NULL, 1 << 1, 0, 0, -1 },
 	{ "Virt-manager", NULL, NULL, 0, 1, 0, 0, -1 },
 	{ "Steam", NULL, NULL, 1 << 3, 0, 0, 0, -1 },
@@ -77,7 +86,7 @@ static const Rule rules[] = {
 	{ NULL,      "spterm",    NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
 	{ NULL,      "spcalc",    NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
 	{ NULL,      "virt-manager",    NULL,       	    SPTAG(2),     1,           1,         0,        -1 },
-	{ NULL,      "Tor Browser",    NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
+	{ "Tor Browser",      NULL,    NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
 	{ NULL,      "spnewsboat",    NULL,       	    SPTAG(4),     1,           1,         0,        -1 },
 	{ NULL,      "wireshark",    NULL,       	    SPTAG(5),     1,           1,         0,        -1 },
 	{ "rofi",      "rofi",    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
@@ -132,7 +141,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "alacritty", "-e", "tmux", NULL };
+static const char *termcmd[]  = { "st", "-e", "tmux", NULL };
 
 #include <X11/XF86keysym.h>
 #include "shiftview.c"
