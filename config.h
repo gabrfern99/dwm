@@ -93,7 +93,7 @@ static const Rule rules[] = {
 	{ NULL,      "wireshark",    NULL,       	    SPTAG(5),     1,           1,         0,        -1 },
 	{ "rofi",      "rofi",    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
 	{ NULL,      "spneo",    NULL,       	    SPTAG(7),     1,           1,         0,        -1 },
-	{ "Telegram",      "Telegram",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
+	{ NULL,      "telegram-desktop",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "cherrytree",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 };
