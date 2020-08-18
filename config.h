@@ -51,6 +51,7 @@ const char *spcmd7[] = { "rofi.sh", NULL };
 const char *spcmd8[] = { "st", "-n", "spneo", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "cherrytree", NULL };
+const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
 
 
 static Sp scratchpads[] = {
@@ -65,6 +66,7 @@ static Sp scratchpads[] = {
 	{"spneo", spcmd8},
 	{"sptel", spcmd9},
 	{"spcherry", spcmd10},
+	{"spzap", spcmd11},
 };
 
 
@@ -93,6 +95,7 @@ static const Rule rules[] = {
 	{ NULL,      "spneo",    NULL,       	    SPTAG(7),     1,           1,         0,        -1 },
 	{ "Telegram",      "Telegram",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "cherrytree",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
+	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -223,7 +226,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_z,		incrgaps,	{.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_z,		incrgaps,	{.i = -1 } },
 	/* { MODKEY,			XK_x,		spawn,		SHCMD("") }, */
-	/* { MODKEY|ShiftMask,		XK_x,		spawn,		SHCMD("") }, */
+	{ MODKEY|ShiftMask,		XK_x, togglescratch, {.ui = 10 } },
 	{ MODKEY,			XK_c,		spawn,		SHCMD("st -e bc -l") },
 	{ MODKEY|ShiftMask,		XK_c,		togglescratch, {.ui = 9 } },
 	{ MODKEY,			XK_v,		spawn,		SHCMD("virt-manager") },
