@@ -52,7 +52,7 @@ const char *spcmd8[] = { "st", "-n", "spneo", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "cherrytree", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
-
+const char *spcmd12[] = { "qtranslate.exe", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -67,6 +67,7 @@ static Sp scratchpads[] = {
 	{"sptel", spcmd9},
 	{"spcherry", spcmd10},
 	{"spzap", spcmd11},
+	{"spqtranslate", spcmd12},
 };
 
 
@@ -96,6 +97,7 @@ static const Rule rules[] = {
 	{ NULL,      "telegram-desktop",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "cherrytree",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
+	{ NULL,      "qtranslate.exe",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -176,7 +178,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_Tab,		view,		{0} },
 	/* { MODKEY|ShiftMask,		XK_Tab,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_q,		killclient,	{0} },
-	/* { MODKEY|ShiftMask,		XK_q,		spawn,		SHCMD("") }, */
+	{ MODKEY|ShiftMask,		XK_q, togglescratch, {.ui = 11 } },
 	{ MODKEY,			XK_w,		spawn,		SHCMD("$BROWSER") },
 	{ MODKEY|ShiftMask,		XK_w,		togglescratch,		{.ui = 5 } },
 	{ MODKEY,			XK_e,		togglescratch,		{.ui = 7 } },
