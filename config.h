@@ -54,6 +54,7 @@ const char *spcmd10[] = { "cherrytree", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
 const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "rofi.sh", NULL };
+const char *spcmd14[] = { "freetube-bin", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -70,6 +71,7 @@ static Sp scratchpads[] = {
 	{"spzap", spcmd11},
 	{"spcrow", spcmd12},
 	{"sprofi", spcmd13},
+	{"spfreetube", spcmd14},
 };
 
 
@@ -101,6 +103,7 @@ static const Rule rules[] = {
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "rofi",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
+	{ "FreeTube",      NULL,    NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -191,7 +194,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,		XK_t,		togglescratch,	{.ui = 3 } },
 	{ MODKEY,			XK_y,		setlayout,	{.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,		XK_y,		setlayout,	{.v = &layouts[3]} },
+	{ MODKEY|ShiftMask,		XK_y, togglescratch, {.ui = 13 } },
 	/*{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, */
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} },
 	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} },
