@@ -8,7 +8,7 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
 static const unsigned int gappih    = 0;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 0;       /* vert inner gap between windows */
+ const unsigned int gappiv    = 0;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 0;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 0;       /* vert outer gap between windows and screen edge */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -47,12 +47,13 @@ const char *spcmd3[] = { "virt-manager", NULL };
 const char *spcmd4[] = { "torbrowser", NULL };
 const char *spcmd5[] = { "st", "-n", "spnewsboat", "-f" "monospace:size=11", "-g", "120x20", "-e", "newsboat", NULL };
 const char *spcmd6[] = { "wireshark", NULL };
-const char *spcmd7[] = { "rofi.sh", NULL };
+const char *spcmd7[] = { "st", "-n", "spranger", "-g", "120x40", "-e", "ranger", NULL };
 const char *spcmd8[] = { "st", "-n", "spneo", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "cherrytree", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
 const char *spcmd12[] = { "qtranslate.exe", NULL };
+const char *spcmd13[] = { "rofi.sh", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -62,12 +63,13 @@ static Sp scratchpads[] = {
 	{"sptorbrowser", spcmd4},
 	{"spnewsboat", spcmd5},
 	{"spwireshark", spcmd6},
-	{"sprofi", spcmd7},
+	{"spranger", spcmd7},
 	{"spneo", spcmd8},
 	{"sptel", spcmd9},
 	{"spcherry", spcmd10},
 	{"spzap", spcmd11},
 	{"spqtranslate", spcmd12},
+	{"sprofi", spcmd13},
 };
 
 
@@ -92,12 +94,13 @@ static const Rule rules[] = {
 	{ "Tor Browser",      NULL,    NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
 	{ NULL,      "spnewsboat",    NULL,       	    SPTAG(4),     1,           1,         0,        -1 },
 	{ NULL,      "wireshark",    NULL,       	    SPTAG(5),     1,           1,         0,        -1 },
-	{ "rofi",      "rofi",    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
+	{ NULL,      "spranger",    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
 	{ NULL,      "spneo",    NULL,       	    SPTAG(7),     1,           1,         0,        -1 },
 	{ NULL,      "telegram-desktop",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "cherrytree",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "qtranslate.exe",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
+	{ NULL,      "rofi",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -184,7 +187,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_e,		togglescratch,		{.ui = 7 } },
 	{ MODKEY|ShiftMask,		XK_e,		spawn,		SHCMD("tutorialvids") },
 	{ MODKEY,			XK_r,		togglescratch,		{.ui = 6 } },
-	/* { MODKEY|ShiftMask,		XK_r,		quit,		{1} }, */
+	{ MODKEY|ShiftMask,		XK_r, togglescratch, {.ui = 12 } },
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,		XK_t,		togglescratch,	{.ui = 3 } },
 	{ MODKEY,			XK_y,		setlayout,	{.v = &layouts[2]} },
@@ -212,7 +215,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_d,		togglegaps,	{0} },
 	{ MODKEY,			XK_f,		togglefullscr,	{0} },
 	{ MODKEY|ShiftMask,		XK_f,		setlayout,	{.v = &layouts[8]} },
-	/* { MODKEY,			XK_g,		shiftview,	{ .i = -1 } }, */
+	/* { MODKEY,			XK_g, togglescratch, {.ui = 12 } }, */
 	{ MODKEY|ShiftMask, XK_g, togglescratch,  {.ui = 8 } },
 	/* { MODKEY|ShiftMask,		XK_g,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_h,		setmfact,	{.f = -0.05} },
