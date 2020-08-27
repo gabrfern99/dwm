@@ -52,7 +52,7 @@ const char *spcmd8[] = { "st", "-n", "spneo", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "cherrytree", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
-const char *spcmd12[] = { "qtranslate.exe", NULL };
+const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "rofi.sh", NULL };
 
 static Sp scratchpads[] = {
@@ -68,7 +68,7 @@ static Sp scratchpads[] = {
 	{"sptel", spcmd9},
 	{"spcherry", spcmd10},
 	{"spzap", spcmd11},
-	{"spqtranslate", spcmd12},
+	{"spcrow", spcmd12},
 	{"sprofi", spcmd13},
 };
 
@@ -99,7 +99,7 @@ static const Rule rules[] = {
 	{ NULL,      "telegram-desktop",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "cherrytree",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
-	{ NULL,      "qtranslate.exe",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
+	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "rofi",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
 };
 
