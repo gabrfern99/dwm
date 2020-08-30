@@ -76,7 +76,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "🎮", "", "📖", "", "8", "9" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -93,7 +93,7 @@ static const Rule rules[] = {
 	{ NULL,      "spterm",    NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
 	{ NULL,      "spcalc",    NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
 	{ NULL,      "virt-manager",    NULL,       	    SPTAG(2),     1,           1,         0,        -1 },
-	{ "Tor Browser",      NULL,    NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
+	/* { "Tor Browser",      NULL,    NULL,       	    SPTAG(3),     1,           1,         0,        -1 }, */
 	{ NULL,      "spnewsboat",    NULL,       	    SPTAG(4),     1,           1,         0,        -1 },
 	{ NULL,      "wireshark",    NULL,       	    SPTAG(5),     1,           1,         0,        -1 },
 	{ NULL,      "spranger",    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
@@ -192,13 +192,13 @@ static Key keys[] = {
 	{ MODKEY,			XK_r,		togglescratch,		{.ui = 6 } },
 	{ MODKEY|ShiftMask,		XK_r, togglescratch, {.ui = 12 } },
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
-	{ MODKEY|ShiftMask,		XK_t,		togglescratch,	{.ui = 3 } },
+	/* { MODKEY|ShiftMask,		XK_t,		togglescratch,	{.ui = 3 } }, */
 	{ MODKEY,			XK_y,		setlayout,	{.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,		XK_y, togglescratch, {.ui = 13 } },
 	/*{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, */
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} },
 	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} },
-	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[7]} },
+	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[1]} },
 	{ MODKEY,			XK_o,		incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_o,		incnmaster,     {.i = -1 } },
 	{ MODKEY,			XK_p,			spawn,		SHCMD("mpc toggle") },
