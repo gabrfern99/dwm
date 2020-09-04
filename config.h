@@ -184,7 +184,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_Tab,		view,		{0} },
 	/* { MODKEY|ShiftMask,		XK_Tab,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_q,		killclient,	{0} },
-	{ MODKEY|ShiftMask,		XK_q, togglescratch, {.ui = 11 } },
+	/* { MODKEY|ShiftMask,XK_q, togglescratch, {.ui = 11 } }, */
 	{ MODKEY,			XK_w,		spawn,		SHCMD("$BROWSER") },
 	{ MODKEY|ShiftMask,		XK_w,		togglescratch,		{.ui = 5 } },
 	{ MODKEY,			XK_e,		togglescratch,		{.ui = 7 } },
@@ -192,7 +192,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_r,		togglescratch,		{.ui = 6 } },
 	{ MODKEY|ShiftMask,		XK_r, togglescratch, {.ui = 12 } },
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
-	/* { MODKEY|ShiftMask,		XK_t,		togglescratch,	{.ui = 3 } }, */
+	{ MODKEY|ShiftMask, XK_t, togglescratch, {.ui = 11 } },
 	{ MODKEY,			XK_y,		setlayout,	{.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,		XK_y, togglescratch, {.ui = 13 } },
 	/*{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, */
