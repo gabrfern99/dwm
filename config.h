@@ -17,19 +17,13 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=9", "JoyPixels:pixelsize=9:antialias=true:autohint=true", "FontAwesome:pixelsize=9:antialias=true:autohint=true" };
 static char dmenufont[]       = "monospace:size=10";
-/* static char normbgcolor[]           = "#222222"; */
-/* static char normbordercolor[]       = "#444444"; */
-/* static char normfgcolor[]           = "#bbbbbb"; */
-/* static char selfgcolor[]            = "#eeeeee"; */
-/* static char selbordercolor[]        = "#ffae00"; #005577 */
-/* static char selbgcolor[]            = "#ffae00"; #005577 */
 
-static char normbordercolor[] = "#484848";
-static char normbgcolor[]     = "#000000";
-static char normfgcolor[]     = "#C40000";
-static char selbordercolor[]  = "#C40000";
-static char selbgcolor[]      = "#C40000";
-static char selfgcolor[]      = "#FFFFFF";
+static char normbgcolor[]           = "#222222";
+static char normbordercolor[]       = "#444444";
+static char normfgcolor[]           = "#bbbbbb";
+static char selfgcolor[]            = "#eeeeee";
+static char selbordercolor[]        = "#ffae00"; /* #005577 */
+static char selbgcolor[]            = "#ffae00"; /* #005577 */
 
 static char *colors[][3] = {
        /*               fg           bg           border   */
