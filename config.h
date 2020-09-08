@@ -38,7 +38,7 @@ typedef struct {
 const char *spcmd1[] = { "st", "-n", "spterm", "-e","tmux", NULL };
 const char *spcmd2[] = { "st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
 const char *spcmd3[] = { "virt-manager", NULL };
-const char *spcmd4[] = { "torbrowser", NULL };
+const char *spcmd4[] = { "burpsuite", NULL };
 const char *spcmd5[] = { "st", "-n", "spnewsboat", "-f" "monospace:size=11", "-g", "120x20", "-e", "newsboat", NULL };
 const char *spcmd6[] = { "wireshark", NULL };
 const char *spcmd7[] = { "st", "-n", "spranger", "-g", "120x40", "-e", "ranger", NULL };
@@ -55,7 +55,7 @@ static Sp scratchpads[] = {
 	{"spterm",      spcmd1},
 	{"spcalc",    spcmd2},
 	{"spvirtman", spcmd3},
-	{"sptorbrowser", spcmd4},
+	{"spburp", spcmd4},
 	{"spnewsboat", spcmd5},
 	{"spwireshark", spcmd6},
 	{"spranger", spcmd7},
@@ -87,7 +87,7 @@ static const Rule rules[] = {
 	{ NULL,      "spterm",    NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
 	{ NULL,      "spcalc",    NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
 	{ NULL,      "virt-manager",    NULL,       	    SPTAG(2),     1,           1,         0,        -1 },
-	/* { "Tor Browser",      NULL,    NULL,       	    SPTAG(3),     1,           1,         0,        -1 }, */
+	{ NULL,      "burp-StartBurp",    NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
 	{ NULL,      "spnewsboat",    NULL,       	    SPTAG(4),     1,           1,         0,        -1 },
 	{ NULL,      "wireshark",    NULL,       	    SPTAG(5),     1,           1,         0,        -1 },
 	{ NULL,      "spranger",    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
@@ -234,7 +234,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_v,		spawn,		SHCMD("virt-manager") },
 	{ MODKEY|ShiftMask,		XK_v, togglescratch, {.ui = 2 } },
 	{ MODKEY,			XK_b,		togglebar,	{0} },
-	/* { MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("") }, */
+	{ MODKEY|ShiftMask,		XK_b, togglescratch, {.ui = 3} },
 	{ MODKEY,			XK_n,		spawn,		SHCMD("manpdf 2> /dev/null") },
 	{ MODKEY|ShiftMask,		XK_n, togglescratch,		{.ui = 4 } },
 	{ MODKEY,			XK_m,		spawn,		SHCMD("st -e ncmpcpp") },
