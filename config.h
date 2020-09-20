@@ -41,7 +41,7 @@ const char *spcmd3[] = { "virt-manager", NULL };
 const char *spcmd4[] = { "burpsuite", NULL };
 const char *spcmd5[] = { "st", "-n", "spnewsboat", "-f" "monospace:size=11", "-g", "120x20", "-e", "newsboat", NULL };
 const char *spcmd6[] = { "wireshark", NULL };
-const char *spcmd7[] = { "st", "-n", "spranger", "-g", "120x40", "-e", "ranger", NULL };
+const char *spcmd7[] = { "thunar", NULL };
 const char *spcmd8[] = { "st", "-n", "spneo", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "cherrytree", NULL };
@@ -57,7 +57,7 @@ static Sp scratchpads[] = {
 	{"spvirtman", spcmd3},
 	{"spburp", spcmd4},
 	{"spnewsboat", spcmd5},
-	{"spwireshark", spcmd6},
+	{"spthunar", spcmd6},
 	{"spranger", spcmd7},
 	{"spneo", spcmd8},
 	{"sptel", spcmd9},
@@ -90,7 +90,7 @@ static const Rule rules[] = {
 	{ NULL,      "burp-StartBurp",    NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
 	{ NULL,      "spnewsboat",    NULL,       	    SPTAG(4),     1,           1,         0,        -1 },
 	{ NULL,      "wireshark",    NULL,       	    SPTAG(5),     1,           1,         0,        -1 },
-	{ NULL,      "spranger",    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
+	{ "Thunar",      NULL,    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
 	{ NULL,      "spneo",    NULL,       	    SPTAG(7),     1,           1,         0,        -1 },
 	{ NULL,      "telegram-desktop",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "cherrytree",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
