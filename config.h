@@ -48,6 +48,7 @@ const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
 const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "rofi.sh", NULL };
 const char *spcmd14[] = { "freetube-bin", NULL };
+const char *spcmd15[] = { "soundcloud-nativefier", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -65,6 +66,7 @@ static Sp scratchpads[] = {
 	{"spcrow", spcmd12},
 	{"sprofi", spcmd13},
 	{"spfreetube", spcmd14},
+	{"spsoundcloud", spcmd15},
 };
 
 
@@ -97,6 +99,7 @@ static const Rule rules[] = {
 	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "rofi",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
 	{ "FreeTube",      NULL,    NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
+	{ NULL,      "soundcloud-nativefier-914611",    NULL, SPTAG(14),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -225,8 +228,8 @@ static Key keys[] = {
 
 	{ MODKEY,			XK_a,		spawn,		SHCMD("st -e pulsemixer; kill -44 $(pidof dwmblocks)") },
 	/* { MODKEY|ShiftMask,		XK_a,		spawn,		SHCMD("") }, */
-	{ MODKEY,			XK_s,       spawn,		SHCMD("pdfselect") },
-	/* { MODKEY|ShiftMask,		XK_s,		spawn,		SHCMD("") }, */
+	{ MODKEY, XK_s, togglescratch, {.ui = 14 } },
+	{ MODKEY|ShiftMask, XK_s, spawn,  SHCMD("pdfselect") },
 	{ MODKEY,			XK_d,		spawn,          SHCMD("dmenu_run") },
 	{ MODKEY|ShiftMask,		XK_d,		togglegaps,	{0} },
 	{ MODKEY,			XK_f,		togglefullscr,	{0} },
