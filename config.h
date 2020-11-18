@@ -34,7 +34,7 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = { "st", "-n", "spterm", "-e","tmux", "attach", NULL };
+const char *spcmd1[] = { "st", "-n", "spterm", "-e","tmux", "new-session", "-A", "-s", "spterm", NULL };
 const char *spcmd2[] = { "st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "qalculate-gtk", NULL };
 const char *spcmd3[] = { "virt-manager", NULL };
 const char *spcmd4[] = { "burpsuite", NULL };
@@ -146,7 +146,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *termcmd[]  = { "st", "-e", "tmux", "attach", NULL };
+static const char *termcmd[]  = { "st", "-e", "tmux", "new-session", "-A", "-s", "main", NULL };
 
 ResourcePref resources[] = {
 		{ "dwm.color0",		STRING,	&normbordercolor },
