@@ -41,7 +41,7 @@ const char *spcmd4[] = { "burpsuite", NULL };
 const char *spcmd5[] = { "st", "-n", "spnewsboat", "-f" "monospace:size=11", "-g", "120x20", "-e", "newsboat", NULL };
 const char *spcmd6[] = { "wireshark", NULL };
 const char *spcmd7[] = { "thunar", NULL };
-const char *spcmd8[] = { "st", "-n", "spneo", "-e", "neomutt", NULL };
+const char *spcmd8[] = { "st", "-n", "spneo", "-g", "150x30", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "cherrytree", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
