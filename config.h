@@ -34,7 +34,7 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = { "st", "-n", "spterm", "-e","tmux", "new-session", "-A", "-s", "spterm", NULL };
+const char *spcmd1[] = { "st", "-n", "spterm", "-g", "150x30", "-e","tmux", "new-session", "-A", "-s", "spterm", NULL };
 const char *spcmd2[] = { "st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "qalculate-gtk", NULL };
 const char *spcmd3[] = { "virt-manager", NULL };
 const char *spcmd4[] = { "burpsuite", NULL };
