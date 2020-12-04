@@ -17,12 +17,12 @@ static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static char *fonts[]          = { "monospace:size=9", "JoyPixels:pixelsize=9:antialias=true:autohint=true", "FontAwesome:pixelsize=9:antialias=true:autohint=true" };
 
-static char normbgcolor[]           = "#222222";
-static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#bbbbbb";
-static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#ae00ff";/* "#ffae00"  #005577 */
-static char selbgcolor[]            = "#ae00ff";/* #005577 */
+static char normbgcolor[]           = "#1a1a1a"; /* "#222222"; */
+static char normbordercolor[]       = "#1a1a1a"; /* "#444444"; */
+static char normfgcolor[]           = "#d7d7d7"; /* "#bbbbbb"; */
+static char selfgcolor[]            = "#d7d7d7"; /* "#eeeeee"; */
+static char selbordercolor[]        = "#ffffff"; /* "#ae00ff"; */
+static char selbgcolor[]            = "#8f3d3d"; /*"#ae00ff"; */
 
 static char *colors[][3] = {
        /*               fg           bg           border   */
