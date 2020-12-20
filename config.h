@@ -98,7 +98,7 @@ static const Rule rules[] = {
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "rofi",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
-	{ "FreeTube",      NULL,    NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
+	{ "FreeTube",      NULL, NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
 	{ NULL,      "soundcloud-nativefier-914611",    NULL, SPTAG(14),     1,           1,         0,        -1 },
 };
 
@@ -110,7 +110,7 @@ static int resizehints = 1;    /* 1 means respect size hints in tiled resizals *
 #include "vanitygaps.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
- 	{ "[]=",	tile },			/* Default: Master on left, slaves on right */
+ 	{ "[]=",	tile },			/* Default: Master on lefnt, slaves on right */
 	{ "TTT",	bstack },		/* Master on top, slaves on bottom */
 
 	{ "[@]",	spiral },		/* Fibonacci spiral */
@@ -149,12 +149,12 @@ static const Layout layouts[] = {
 static const char *termcmd[]  = { "st", "-e", "tmux", "new-session", "-A", "-s", "main", NULL };
 
 ResourcePref resources[] = {
-		{ "dwm.color0",		STRING,	&normbordercolor },
-		{ "dwm.color8",		STRING,	&selbordercolor },
-		{ "dwm.color0",		STRING,	&normbgcolor },
-		{ "dwm.color4",		STRING,	&normfgcolor },
-		{ "dwm.color0",		STRING,	&selfgcolor },
-		{ "dwm.color4",		STRING,	&selbgcolor },
+		{ "color0",		STRING,	&normbordercolor },
+		{ "color8",		STRING,	&selbordercolor },
+		{ "color0",		STRING,	&normbgcolor },
+		{ "color4",		STRING,	&normfgcolor },
+		{ "color0",		STRING,	&selfgcolor },
+		{ "color4",		STRING,	&selbgcolor },
 		{ "borderpx",		INTEGER, &borderpx },
 		{ "snap",		INTEGER, &snap },
 		{ "showbar",		INTEGER, &showbar },
@@ -209,8 +209,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_r, togglescratch, {.ui = 12 } },
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
 	{ MODKEY|ShiftMask, XK_t, togglescratch, {.ui = 11 } },
-	{ MODKEY,			XK_y,		setlayout,	{.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,		XK_y, togglescratch, {.ui = 13 } },
+	/* { MODKEY|Shiftmask,			XK_y,		setlayout,	{.v = &layouts[2]} }, */
+	{ MODKEY, XK_y, togglescratch, {.ui = 13 } },
 	/*{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, */
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} },
 	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} },
@@ -348,7 +348,8 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	/*{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} }, */
+	{ ClkRootWin,           0,              Button3,        spawn,          SHCMD("jgmenu_run") },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
