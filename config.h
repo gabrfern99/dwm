@@ -230,7 +230,7 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_a,		spawn,		SHCMD("") }, */
 	{ MODKEY, XK_s, togglescratch, {.ui = 14 } },
 	{ MODKEY|ShiftMask, XK_s, spawn,  SHCMD("pdfselect") },
-	{ MODKEY,			XK_d,		spawn,          SHCMD("dmenu_run") },
+	{ MODKEY,			XK_d,		spawn,          SHCMD("j4-dmenu-desktop") },
 	{ MODKEY|ShiftMask,		XK_d,		togglegaps,	{0} },
 	{ MODKEY,			XK_f,		togglefullscr,	{0} },
 	{ MODKEY|ShiftMask,		XK_f,		setlayout,	{.v = &layouts[8]} },
