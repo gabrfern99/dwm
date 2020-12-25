@@ -46,7 +46,7 @@ const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "cherrytree", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
 const char *spcmd12[] = { "crow", NULL };
-const char *spcmd13[] = { "rofi.sh", NULL };
+const char *spcmd13[] = { "st", "-n", "spranger", "-g", "150x30", "-e","ranger" };
 const char *spcmd14[] = { "freetube-bin", NULL };
 const char *spcmd15[] = { "soundcloud-nativefier", NULL };
 const char *spcmd16[] = { "st", "-n", "spncmpcpp", "-g", "150x30", "-e", "ncmpcpp", NULL };
@@ -65,7 +65,7 @@ static Sp scratchpads[] = {
 	{"spcherry", spcmd10},
 	{"spzap", spcmd11},
 	{"spcrow", spcmd12},
-	{"sprofi", spcmd13},
+	{"spranger", spcmd13},
 	{"spfreetube", spcmd14},
 	{"spsoundcloud", spcmd15},
 	{"spncmpcpp", spcmd16},
@@ -99,7 +99,7 @@ static const Rule rules[] = {
 	{ NULL,      "cherrytree",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
-	{ NULL,      "rofi",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
+	{ NULL,      "spranger",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
 	{ "FreeTube",      NULL, NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
 	{ NULL,      "soundcloud-nativefier-914611",    NULL, SPTAG(14),     1,           1,         0,        -1 },
 	{ NULL,      "spncmpcpp",    NULL,       SPTAG(15),     1,           1,         0,        -1 },
@@ -218,7 +218,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} },
 	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} },
 	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[1]} },
-	{ MODKEY,			XK_o,		incnmaster,     {.i = +1 } },
+	{ MODKEY,			XK_o, spawn, SHCMD("rofi.sh") },
 	{ MODKEY|ShiftMask,		XK_o,		incnmaster,     {.i = -1 } },
 	{ MODKEY,			XK_p,			spawn,		SHCMD("playerctl -p mpd play-pause") },
 	{ MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("playerctl -p mpd pause ; pauseallmpv") },
