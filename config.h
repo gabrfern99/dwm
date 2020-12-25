@@ -35,7 +35,7 @@ typedef struct {
 	const void *cmd;
 } Sp;
 const char *spcmd1[] = { "st", "-n", "spterm", "-g", "150x30", "-e","tmux", "new-session", "-A", "-s", "spterm", NULL };
-const char *spcmd2[] = { "st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "qalculate-gtk", NULL };
+const char *spcmd2[] = { "st", "-n", "spcalc", "-g", "50x20", "-e", "qalculate-gtk", NULL };
 const char *spcmd3[] = { "virt-manager", NULL };
 const char *spcmd4[] = { "burpsuite", NULL };
 const char *spcmd5[] = { "st", "-n", "spnewsboat", "-f" "monospace:size=11", "-g", "120x20", "-e", "newsboat", NULL };
@@ -49,6 +49,7 @@ const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "rofi.sh", NULL };
 const char *spcmd14[] = { "freetube-bin", NULL };
 const char *spcmd15[] = { "soundcloud-nativefier", NULL };
+const char *spcmd16[] = { "st", "-n", "spncmpcpp", "-g", "150x30", "-e", "ncmpcpp", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -67,6 +68,7 @@ static Sp scratchpads[] = {
 	{"sprofi", spcmd13},
 	{"spfreetube", spcmd14},
 	{"spsoundcloud", spcmd15},
+	{"spncmpcpp", spcmd16},
 };
 
 
@@ -100,6 +102,7 @@ static const Rule rules[] = {
 	{ NULL,      "rofi",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
 	{ "FreeTube",      NULL, NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
 	{ NULL,      "soundcloud-nativefier-914611",    NULL, SPTAG(14),     1,           1,         0,        -1 },
+	{ NULL,      "spncmpcpp",    NULL,       SPTAG(15),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -259,7 +262,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_b, togglescratch, {.ui = 3} },
 	{ MODKEY,			XK_n,		spawn,		SHCMD("manpdf 2> /dev/null") },
 	{ MODKEY|ShiftMask,		XK_n, togglescratch,		{.ui = 4 } },
-	{ MODKEY,			XK_m,		spawn,		SHCMD("st -e ncmpcpp") },
+	{ MODKEY,			XK_m,		togglescratch,		{.ui = 15} },
 	{ MODKEY|ShiftMask,		XK_m,		spawn,		SHCMD("pamixer -t") },
 	{ MODKEY,			XK_comma,	spawn,		SHCMD("mpc -h $MAINIPAD prev") },
 	{ MODKEY|ShiftMask,		XK_comma,	spawn,		SHCMD("mpc -h $MAINIPAD seek 0%") },
