@@ -4,7 +4,7 @@
 static unsigned int borderpx  = 0;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const unsigned int systrayspacing = 4;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
 static unsigned int gappih    = 0;       /* horiz inner gap between windows */
@@ -15,8 +15,7 @@ static int swallowfloating    = 0;        /* 1 means swallow floating windows by
 static int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "JoyPixels:pixelsize=9:antialias=true:autohint=true", "FontAwesome:pixelsize=9:antialias=true:autohint=true",};
-
+static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "JoyPixels:pixelsize=12:antialias=true:autohint=true", "FontAwesome:pixelsize=15:antialias=true:autohint=true",};
 static char normbgcolor[]           = "#1a1a1a"; /* "#222222"; */
 static char normbordercolor[]       = "#1a1a1a"; /* "#444444"; */
 static char normfgcolor[]           = "#d7d7d7"; /* "#bbbbbb"; */
@@ -75,7 +74,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -214,7 +213,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_r,		togglescratch,		{.ui = 6 } },
 	{ MODKEY|ShiftMask,		XK_r, togglescratch, {.ui = 12 } },
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
-	{ MODKEY|ShiftMask, XK_t, togglescratch, {.ui = 11 } },
+	{ MODKEY|ShiftMask, XK_t, togglescratch, {.ui = 14 } },
 	/* { MODKEY|Shiftmask,			XK_y,		setlayout,	{.v = &layouts[2]} }, */
 	{ MODKEY, XK_y, togglescratch, {.ui = 13 } },
 	/*{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, */
@@ -233,7 +232,7 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_backslash,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_a, togglescratch, {.ui = 10} },
 	/* { MODKEY|ShiftMask,		XK_a,		spawn,		SHCMD("") }, */
-	{ MODKEY, XK_s, togglescratch, {.ui = 14 } },
+	{ MODKEY, XK_s, togglescratch, {.ui = 11 } },
 	{ MODKEY|ShiftMask, XK_s, spawn,  SHCMD("pdfselect") },
 	{ MODKEY,			XK_d,		spawn,          SHCMD("dmenu_run") },
 	{ MODKEY|ShiftMask,		XK_d,		togglegaps,	{0} },
