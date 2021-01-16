@@ -48,7 +48,7 @@ static char *colors[][3]      = {
 	/*               fg         bg         border           code */
 	[SchemeNorm]     = { fore,      back,      back   }, // \x0b
 	[SchemeSel]      = { fore,      back,      border   }, // \x0c
-	[SchemeStatus]   = { fore,      back,      border }, // \x0d
+	[SchemeStatus]   = { fore,      col8,      border }, // \x0d
 	[SchemeTagsSel]  = { col10,      back,    border }, // \x0e
 	[SchemeTagsNorm] = { col8,      back,      border }, // \x0f
 	[SchemeInfoSel]  = { col11,      back,      border }, // \x10
