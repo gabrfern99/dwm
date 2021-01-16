@@ -42,17 +42,18 @@ static char col12[]  = "#00A5AF";
 static char col13[]  = "#B367CF";
 static char col14[]  = "#00A5AF";
 static char col15[]  = "#CACACC";
+static char col16[]  = "#2B3833";
 
 /* Here is the color array. Check the 'color.h' file to see the names' */
 static char *colors[][3]      = {
 	/*               fg         bg         border           code */
-	[SchemeNorm]     = { fore,      back,      back   }, // \x0b
+	[SchemeNorm]     = { fore,      back,      border   }, // \x0b
 	[SchemeSel]      = { fore,      back,      border   }, // \x0c
 	[SchemeStatus]   = { fore,      col8,      border }, // \x0d
-	[SchemeTagsSel]  = { col10,      back,    border }, // \x0e
-	[SchemeTagsNorm] = { col8,      back,      border }, // \x0f
-	[SchemeInfoSel]  = { col11,      back,      border }, // \x10
-	[SchemeInfoNorm] = { col1,      back,      border }, // \x11
+	[SchemeTagsSel]  = { back,      col11,    border }, // \x0e
+	[SchemeTagsNorm] = { back,      col4,    border }, // \x0f
+	[SchemeInfoSel]  = { back,      col1,      border }, // \x10
+	[SchemeInfoNorm] = { back,      col1,      border }, // \x11
 };
 
 typedef struct {
