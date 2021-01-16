@@ -23,10 +23,36 @@ static char selfgcolor[]            = "#d7d7d7"; /* "#eeeeee"; */
 static char selbordercolor[]        = "#ffffff"; /* "#ae00ff"; */
 static char selbgcolor[]            = "#8f3d3d"; /*"#ae00ff"; */
 
-static char *colors[][3] = {
-       /*               fg           bg           border   */
-       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
-       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+static char back[]   = "#1C1E27";
+static char fore[]   = "#CACACC";
+static char border[] = "#CACACC";
+static char col0[]   = "#6C6F93";
+static char col1[]   = "#E4436F";
+static char col2[]   = "#24E39D";
+static char col3[]   = "#EDA685";
+static char col4[]   = "#00A5AF";
+static char col5[]   = "#B367CF";
+static char col6[]   = "#00A5AF";
+static char col7[]   = "#CACACC";
+static char col8[]   = "#6C6F93";
+static char col9[]   = "#E4436F";
+static char col10[]  = "#24E39D";
+static char col11[]  = "#EDA685";
+static char col12[]  = "#00A5AF";
+static char col13[]  = "#B367CF";
+static char col14[]  = "#00A5AF";
+static char col15[]  = "#CACACC";
+
+/* Here is the color array. Check the 'color.h' file to see the names' */
+static char *colors[][3]      = {
+	/*               fg         bg         border           code */
+	[SchemeNorm]     = { fore,      back,      back   }, // \x0b
+	[SchemeSel]      = { fore,      back,      border   }, // \x0c
+	[SchemeStatus]   = { fore,      back,      border }, // \x0d
+	[SchemeTagsSel]  = { col10,      back,    border }, // \x0e
+	[SchemeTagsNorm] = { col8,      back,      border }, // \x0f
+	[SchemeInfoSel]  = { col11,      back,      border }, // \x10
+	[SchemeInfoNorm] = { col1,      back,      border }, // \x11
 };
 
 typedef struct {
