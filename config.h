@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx  = 0;        /* border pixel of windows */
+static unsigned int borderpx  = 3;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 4;   /* systray spacing */
@@ -47,8 +47,8 @@ static char col16[]  = "#2B3833";
 /* Here is the color array. Check the 'color.h' file to see the names' */
 static char *colors[][3]      = {
 	/*               fg         bg         border           code */
-	[SchemeNorm]     = { fore,      back,      border   }, // \x0b
-	[SchemeSel]      = { fore,      back,      border   }, // \x0c
+	[SchemeNorm]     = { back,      col8,      border   }, // \x0b
+	[SchemeSel]      = { fore,      back,      back   }, // \x0c
 	[SchemeStatus]   = { fore,      col8,      border }, // \x0d
 	[SchemeTagsSel]  = { back,      col11,    border }, // \x0e
 	[SchemeTagsNorm] = { back,      col4,    border }, // \x0f
