@@ -73,7 +73,7 @@ const char *spcmd10[] = { "cherrytree", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
 const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "st", "-n", "spranger", "-g", "150x30", "-e","ranger" };
-const char *spcmd14[] = { "freetube-bin", NULL };
+//const char *spcmd14[] = { "freetube-bin", NULL };
 const char *spcmd15[] = { "soundcloud-nativefier", NULL };
 const char *spcmd16[] = { "st", "-n", "spncmpcpp", "-g", "150x30", "-e", "ncmpcpp", NULL };
 const char *spcmd17[] = { "ferdi", NULL };
@@ -93,7 +93,7 @@ static Sp scratchpads[] = {
 	{"spzap", spcmd11},
 	{"spcrow", spcmd12},
 	{"spranger", spcmd13},
-	{"spfreetube", spcmd14},
+	//	{"spfreetube", spcmd14},
 	{"spsoundcloud", spcmd15},
 	{"spncmpcpp", spcmd16},
 	{"spferdi", spcmd17},
@@ -101,7 +101,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -111,8 +111,6 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   isterminal noswallow monitor */
 	{ "St",       NULL,       NULL,       0,            0,           1,         0,        -1 },
 	{ NULL,       "St",       NULL,       0,            0,           1,         0,        -1 },
-	{ "qutebrowser", NULL, NULL, 1 << 1, 0, 0, -1 },
-	{ "Xterm", NULL, NULL, 1 << 7, 1, 1, -1 },
 	{ "Virt-manager", NULL, NULL, 0, 1, 0, 0, -1 },
 	{ "Steam", NULL, NULL, 1 << 3, 0, 0, 0, -1 },
 	{ "mpv", NULL, NULL, 0, 1, 0, 0, -1 },
@@ -129,7 +127,7 @@ static const Rule rules[] = {
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "spranger",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
-	{ "FreeTube",      NULL, NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
+	//	{ "FreeTube",      NULL, NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
 	{ NULL,      "soundcloud-nativefier-914611",    NULL, SPTAG(14),     1,           1,         0,        -1 },
 	{ NULL,      "spncmpcpp",    NULL,       SPTAG(15),     1,           1,         0,        -1 },
 	{ NULL,      "ferdi",    NULL,       SPTAG(16),     1,           1,         0,        -1 },
@@ -243,7 +241,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
 	{ MODKEY|ShiftMask, XK_t, togglescratch, {.ui = 14 } },
 	/* { MODKEY|Shiftmask,			XK_y,		setlayout,	{.v = &layouts[2]} }, */
-	{ MODKEY, XK_y, togglescratch, {.ui = 13 } },
+	// { MODKEY, XK_y, togglescratch, {.ui = 13 } },
 	/*{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, */
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} },
 	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} },
