@@ -1,10 +1,10 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx  = 3;        /* border pixel of windows */
+static unsigned int borderpx  = 4;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 4;   /* systray spacing */
+static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray = 1;     /* 0 means no systray */
 static unsigned int gappih    = 20;       /* horiz inner gap between windows */
@@ -73,7 +73,7 @@ const char *spcmd10[] = { "cherrytree", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
 const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "st", "-n", "spranger", "-g", "150x30", "-e","ranger" };
-//const char *spcmd14[] = { "freetube-bin", NULL };
+const char *spcmd14[] = { "keepassxc", NULL };
 const char *spcmd15[] = { "soundcloud-nativefier", NULL };
 const char *spcmd16[] = { "st", "-n", "spncmpcpp", "-g", "150x30", "-e", "ncmpcpp", NULL };
 const char *spcmd17[] = { "ferdi", NULL };
@@ -93,7 +93,7 @@ static Sp scratchpads[] = {
 	{"spzap", spcmd11},
 	{"spcrow", spcmd12},
 	{"spranger", spcmd13},
-	//	{"spfreetube", spcmd14},
+	{"spkeepassxc", spcmd14},
 	{"spsoundcloud", spcmd15},
 	{"spncmpcpp", spcmd16},
 	{"spferdi", spcmd17},
@@ -101,7 +101,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -127,7 +127,7 @@ static const Rule rules[] = {
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "spranger",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
-	//	{ "FreeTube",      NULL, NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
+	{ NULL,      "keepassxc", NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
 	{ NULL,      "soundcloud-nativefier-914611",    NULL, SPTAG(14),     1,           1,         0,        -1 },
 	{ NULL,      "spncmpcpp",    NULL,       SPTAG(15),     1,           1,         0,        -1 },
 	{ NULL,      "ferdi",    NULL,       SPTAG(16),     1,           1,         0,        -1 },
@@ -166,7 +166,7 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 #define STACKKEYS(MOD,ACTION) \
 	{ MOD,	XK_j,	ACTION##stack,	{.i = INC(+1) } }, \
-	{ MOD,	XK_k,	ACTION##stack,	{.i = INC(-1) } }, \
+	/* { MOD,	XK_k,	ACTION##stack,	{.i = INC(-1) } }, */
 	/* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
 	/* { MOD, XK_q,     ACTION##stack, {.i = 0 } }, \ */
 	/* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
@@ -241,7 +241,8 @@ static Key keys[] = {
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
 	{ MODKEY|ShiftMask, XK_t, togglescratch, {.ui = 14 } },
 	/* { MODKEY|Shiftmask,			XK_y,		setlayout,	{.v = &layouts[2]} }, */
-	// { MODKEY, XK_y, togglescratch, {.ui = 13 } },
+	/* { MODKEY, XK_y, togglescratch, {.ui = 13 } }, */
+	{ MODKEY, XK_k, togglescratch, {.ui = 13 } },
 	/*{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, */
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} },
 	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} },
