@@ -76,7 +76,6 @@ const char *spcmd13[] = { "st", "-n", "spranger", "-g", "150x30", "-e","ranger" 
 const char *spcmd14[] = { "keepassxc", NULL };
 const char *spcmd15[] = { "soundcloud-nativefier", NULL };
 const char *spcmd16[] = { "st", "-n", "spncmpcpp", "-g", "150x30", "-e", "ncmpcpp", NULL };
-const char *spcmd17[] = { "ferdi", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -96,7 +95,6 @@ static Sp scratchpads[] = {
 	{"spkeepassxc", spcmd14},
 	{"spsoundcloud", spcmd15},
 	{"spncmpcpp", spcmd16},
-	{"spferdi", spcmd17},
 };
 
 
@@ -130,7 +128,6 @@ static const Rule rules[] = {
 	{ NULL,      "keepassxc", NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
 	{ NULL,      "soundcloud-nativefier-914611",    NULL, SPTAG(14),     1,           1,         0,        -1 },
 	{ NULL,      "spncmpcpp",    NULL,       SPTAG(15),     1,           1,         0,        -1 },
-	{ NULL,      "ferdi",    NULL,       SPTAG(16),     1,           1,         0,        -1 },
 };
 
 /* layout(s) */
@@ -249,7 +246,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} },
 	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} },
 	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[1]} },
-	{ MODKEY,			XK_o, spawn, SHCMD("rofi.sh") },
+	/* { MODKEY,			XK_o, spawn, SHCMD("rofi.sh") },*/
 	{ MODKEY|ShiftMask,		XK_o,		incnmaster,     {.i = -1 } },
 	{ MODKEY,			XK_p,			spawn,		SHCMD("playerctl -p mpd play-pause") },
 	{ MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("playerctl -p spotify play-pause") },
@@ -263,7 +260,7 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_a,		spawn,		SHCMD("") }, */
 	{ MODKEY, XK_s, togglescratch, {.ui = 11 } },
 	{ MODKEY|ShiftMask, XK_s, spawn,  SHCMD("pdfselect") },
-	{ MODKEY,			XK_d,		spawn,          SHCMD("dmenu_run") },
+	{ MODKEY,			XK_d,		spawn,          SHCMD("j4-dmenu-allbin") },
 	{ MODKEY|ShiftMask,		XK_d,		togglegaps,	{0} },
 	{ MODKEY,			XK_f,		togglefullscr,	{0} },
 	{ MODKEY|ShiftMask,		XK_f,		setlayout,	{.v = &layouts[8]} },
