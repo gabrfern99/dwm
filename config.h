@@ -99,7 +99,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -109,12 +109,12 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   isterminal noswallow monitor */
 	{ "St",       NULL,       NULL,       0,            0,           1,         0,        -1 },
 	{ NULL,       "St",       NULL,       0,            0,           1,         0,        -1 },
-	{ "Virt-manager", NULL, NULL, 0, 1, 0, 0, -1 },
+	/* { "Virt-manager", NULL, NULL, 0, 1, 0, 0, -1 }, */
 	{ "Steam", NULL, NULL, 1 << 3, 0, 0, 0, -1 },
 	{ "mpv", NULL, NULL, 0, 1, 0, 0, -1 },
 	{ NULL,      "spterm",    NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
 	{ NULL,      "spcalc",    NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
-	{ NULL,      "virt-manager",    NULL,       	    SPTAG(2),     1,           1,         0,        -1 },
+	/* { NULL,      "virt-manager",    NULL,       	    SPTAG(2),     1,           1,         0,        -1 }, */
 	{ NULL,      "burp-StartBurp",    NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
 	{ NULL,      "spnewsboat",    NULL,       	    SPTAG(4),     1,           1,         0,        -1 },
 	{ NULL,      "wireshark",    NULL,       	    SPTAG(5),     1,           1,         0,        -1 },
@@ -284,7 +284,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_c,		spawn,		SHCMD("st -e bc -l") },
 	{ MODKEY|ShiftMask,		XK_c,		togglescratch, {.ui = 9 } },
 	{ MODKEY,			XK_v,		spawn,		SHCMD("virt-manager") },
-	{ MODKEY|ShiftMask,		XK_v, togglescratch, {.ui = 2 } },
+	/* { MODKEY|ShiftMask,		XK_v, togglescratch, {.ui = 2 } }, */
 	{ MODKEY,			XK_b,		togglebar,	{0} },
 	{ MODKEY|ShiftMask,		XK_b, togglescratch, {.ui = 3} },
 	{ MODKEY,			XK_n,		spawn,		SHCMD("manpdf 2> /dev/null") },
