@@ -281,7 +281,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_z,		incrgaps,	{.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_z,		incrgaps,	{.i = -1 } },
 	/* { MODKEY,			XK_x,		spawn,		SHCMD("") }, */
-	/* { MODKEY|ShiftMask,		XK_x, togglescratch, {.ui = 10 } }, */
+	{ MODKEY|ShiftMask,		XK_x, spawn, SHCMD("betterlockscreen -l") },
 	{ MODKEY,			XK_c,		spawn,		SHCMD("st -e bc -l") },
 	{ MODKEY|ShiftMask,		XK_c,		togglescratch, {.ui = 9 } },
 	{ MODKEY,			XK_v,		spawn,		SHCMD("virt-manager") },
