@@ -15,6 +15,7 @@ static int swallowfloating    = 0;        /* 1 means swallow floating windows by
 static int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
+static const char buttonbar[]       = "--";
 static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "JoyPixels:pixelsize=12:antialias=true:autohint=true", "FontAwesome:pixelsize=15:antialias=true:autohint=true",};
 static char normbgcolor[]           = "#1a1a1a"; /* "#222222"; */
 static char normbordercolor[]       = "#1a1a1a"; /* "#444444"; */
@@ -378,6 +379,7 @@ static Key keys[] = {
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
 	/*{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} }, */
+	{ ClkButton,            0,              Button1,        spawn,          SHCMD("j4-dmenu-allbin") },
 	{ ClkRootWin,           0,              Button3,        spawn,          SHCMD("jgmenu_run") },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
