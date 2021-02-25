@@ -16,7 +16,7 @@ static int smartgaps          = 1;        /* 1 means no outer gap when there is 
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static const char buttonbar[]       = "";
-static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "JoyPixels:pixelsize=12:antialias=true:autohint=true", "FontAwesome:pixelsize=15:antialias=true:autohint=true", "siji:pixelsize=22:antialias=true:autohint=true", };
+static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "JoyPixels:pixelsize=12:antialias=true:autohint=true", "FontAwesome:pixelsize=15:antialias=true:autohint=true", "siji:pixelsize=22n:antialias=true:autohint=true", };
 static char normbgcolor[]           = "#1a1a1a"; /* "#222222"; */
 static char normbordercolor[]       = "#1a1a1a"; /* "#444444"; */
 static char normfgcolor[]           = "#d7d7d7"; /* "#bbbbbb"; */
@@ -100,7 +100,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -139,7 +139,7 @@ static int resizehints = 1;    /* 1 means respect size hints in tiled resizals *
 #include "vanitygaps.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
- 	{ "[]=",	tile },			/* Default: Master on lefnt, slaves on right */
+ 	{ "",	tile },			/* Default: Master on lefnt, slaves on right */
 	{ "TTT",	bstack },		/* Master on top, slaves on bottom */
 
 	{ "[@]",	spiral },		/* Fibonacci spiral */
