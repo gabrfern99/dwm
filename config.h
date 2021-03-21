@@ -70,7 +70,7 @@ const char *spcmd6[] = { "wireshark", NULL };
 const char *spcmd7[] = { "thunar", NULL };
 const char *spcmd8[] = { "st", "-n", "spneo", "-g", "150x30", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
-const char *spcmd10[] = { "cherrytree", NULL };
+const char *spcmd10[] = { "obsidian", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
 const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "st", "-n", "spranger", "-g", "150x30", "-e","ranger" };
@@ -89,7 +89,7 @@ static Sp scratchpads[] = {
 	{"spranger", spcmd7},
 	{"spneo", spcmd8},
 	{"sptel", spcmd9},
-	{"spcherry", spcmd10},
+	{"spobsidian", spcmd10},
 	{"spzap", spcmd11},
 	{"spcrow", spcmd12},
 	{"spranger", spcmd13},
@@ -122,7 +122,7 @@ static const Rule rules[] = {
 	{ "Thunar",      NULL,    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
 	{ NULL,      "spneo",    NULL,       	    SPTAG(7),     1,           1,         0,        -1 },
 	{ NULL,      "telegram-desktop",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
-	{ NULL,      "cherrytree",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
+	{ NULL,      "obsidian",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
 	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "spranger",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
@@ -247,7 +247,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} },
 	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} },
 	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[1]} },
-	/* { MODKEY,			XK_o, spawn, SHCMD("rofi.sh") },*/
+	{ MODKEY,			XK_o, togglescratch, {.ui = 9} },
 	{ MODKEY|ShiftMask,		XK_o,		incnmaster,     {.i = -1 } },
 	{ MODKEY,			XK_p,			spawn,		SHCMD("playerctl -p mpd play-pause") },
 	{ MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("playerctl -p spotify play-pause") },
@@ -283,7 +283,7 @@ static Key keys[] = {
 	/* { MODKEY,			XK_x,		spawn,		SHCMD("") }, */
 	{ MODKEY|ShiftMask,		XK_x, spawn, SHCMD("betterlockscreen -l") },
 	{ MODKEY,			XK_c,		spawn,		SHCMD("st -e bc -l") },
-	{ MODKEY|ShiftMask,		XK_c,		togglescratch, {.ui = 9 } },
+	/* { MODKEY|ShiftMask,		XK_c,		togglescratch, {.ui = 9 } }, */
 	{ MODKEY,			XK_v,		spawn,		SHCMD("virt-manager") },
 	/* { MODKEY|ShiftMask,		XK_v, togglescratch, {.ui = 2 } }, */
 	{ MODKEY,			XK_b,		togglebar,	{0} },
