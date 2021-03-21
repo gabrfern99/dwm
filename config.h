@@ -35,7 +35,7 @@ static char col4[]   = "#00A5AF";
 static char col5[]   = "#B367CF";
 static char col6[]   = "#00A5AF";
 static char col7[]   = "#CACACC";
-static char col8[]   = "#6C6F93";
+static char col8[]   = "#9b9fc9";
 static char col9[]   = "#E4436F";
 static char col10[]  = "#24E39D";
 static char col11[]  = "#EDA685";
@@ -48,13 +48,13 @@ static char col16[]  = "#2B3833";
 /* Here is the color array. Check the 'color.h' file to see the names' */
 static char *colors[][3]      = {
 	/*               fg         bg         border           code */
-	[SchemeNorm]     = { back,      col8,      border   }, // \x0b
+	[SchemeNorm]     = { fore,      back,      border   }, // \x0b
 	[SchemeSel]      = { fore,      back,      back   }, // \x0c
-	[SchemeStatus]   = { fore,      col8,      border }, // \x0d
-	[SchemeTagsSel]  = { back,      col11,    border }, // \x0e
-	[SchemeTagsNorm] = { back,      col4,    border }, // \x0f
-	[SchemeInfoSel]  = { back,      col1,      border }, // \x10
-	[SchemeInfoNorm] = { back,      col1,      border }, // \x11
+	[SchemeStatus]   = { fore,      back,      border }, // \x0d
+	[SchemeTagsSel]  = { back,      fore,   border }, // \x0e
+	[SchemeTagsNorm] = { fore,      back,   border }, // \x0f
+	[SchemeInfoSel]  = { normbgcolor,      fore,      border }, // \x10
+	[SchemeInfoNorm] = { normbgcolor,      fore,      border }, // \x11
 };
 
 typedef struct {
@@ -100,7 +100,7 @@ static Sp scratchpads[] = {
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -219,7 +219,7 @@ static Key keys[] = {
 	TAGKEYS(			XK_9,		8)
 	{ MODKEY,			XK_0,		view,		{.ui = ~0 } },
 	{ MODKEY|ShiftMask,		XK_0,		tag,		{.ui = ~0 } },
-	{ MODKEY|ControlMask,           XK_grave,      setscratch,             {.ui = 0 } },
+	{ MODKEY,           XK_grave,      setscratch,             {.ui = 0 } },
 	{ MODKEY|ShiftMask,             XK_grave,      removescratch,          {.ui = 0 } },
 	{ MODKEY,			XK_minus,	spawn,		SHCMD("pamixer --allow-boost -d 5; kill -44 $(pidof dwmblocks)") },
 	{ MODKEY|ShiftMask,		XK_minus,	spawn,		SHCMD("pamixer --allow-boost -d 15; kill -44 $(pidof dwmblocks)") },
@@ -236,7 +236,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_w,		togglescratch,		{.ui = 5 } },
 	{ MODKEY,			XK_e,		togglescratch,		{.ui = 7 } },
 	{ MODKEY|ShiftMask,		XK_e,		spawn,		SHCMD("tutorialvids") },
-	{ MODKEY,			XK_r,		togglescratch,		{.ui = 6 } },
+	{ MODKEY,			XK_r,		togglescratch,		{.ui = 3 } },
 	{ MODKEY|ShiftMask,		XK_r, togglescratch, {.ui = 12 } },
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
 	{ MODKEY|ShiftMask, XK_t, togglescratch, {.ui = 14 } },
@@ -287,7 +287,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_v,		spawn,		SHCMD("virt-manager") },
 	/* { MODKEY|ShiftMask,		XK_v, togglescratch, {.ui = 2 } }, */
 	{ MODKEY,			XK_b,		togglebar,	{0} },
-	{ MODKEY|ShiftMask,		XK_b, togglescratch, {.ui = 3} },
+	{ MODKEY|ShiftMask,		XK_b, togglescratch, {.ui = 6} },
 	{ MODKEY,			XK_n,		spawn,		SHCMD("manpdf 2> /dev/null") },
 	{ MODKEY|ShiftMask,		XK_n, togglescratch,		{.ui = 4 } },
 	{ MODKEY,			XK_m,		togglescratch,		{.ui = 15} },
@@ -320,7 +320,8 @@ static Key keys[] = {
 	{ MODKEY,			XK_space,	zoom,		{0} },
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
 
-	{ 0,				XK_Print,	spawn,		SHCMD("sleep 0.4; scrot -s /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'") },
+	/* { 0,				XK_Print,	spawn,		SHCMD("sleep 0.4; scrot -s /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'") }, */
+	{ 0,				XK_Print,	spawn,		SHCMD("flameshot gui") },
 	{ ShiftMask,			XK_Print,	spawn,		SHCMD("maimpick") },
 	{ MODKEY,			XK_Print,	spawn,		SHCMD("dmenurecord") },
 	{ MODKEY|ShiftMask,		XK_Print,	spawn,		SHCMD("scrot /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'") },
@@ -380,7 +381,7 @@ static Button buttons[] = {
 	/* click                event mask      button          function        argument */
 	/*{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} }, */
 	{ ClkButton,            0,              Button1,        spawn,          SHCMD("jgmenu_run") },
-	{ ClkRootWin,           0,              Button3,        spawn,          SHCMD("jgmenu_run") },
+	{ ClkRootWin,           0,              Button3,        spawn,          SHCMD("rofi.sh") },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
@@ -398,3 +399,4 @@ static Button buttons[] = {
 	{ ClkTagBar,		0,		Button4,	shiftview,	{.i = -1} },
 	{ ClkTagBar,		0,		Button5,	shiftview,	{.i = 1} },
 };
+
