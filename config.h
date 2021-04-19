@@ -71,7 +71,7 @@ const char *spcmd7[] = { "thunar", NULL };
 const char *spcmd8[] = { "st", "-n", "spneo", "-g", "150x30", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "obsidian", NULL };
-const char *spcmd11[] = { "whatsapp-nativefier-dark", NULL };
+const char *spcmd11[] = { "whatsapp-for-linux", NULL };
 const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "st", "-n", "spranger", "-g", "150x30", "-e","ranger" };
 const char *spcmd14[] = { "keepassxc", NULL };
@@ -123,7 +123,7 @@ static const Rule rules[] = {
 	{ NULL,      "spneo",    NULL,       	    SPTAG(7),     1,           1,         0,        -1 },
 	{ NULL,      "telegram-desktop",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "obsidian",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
-	{ NULL,      "whatsapp-nativefier-d52542",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
+	{ NULL,      "whatsapp-for-linux",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "spranger",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
 	{ NULL,      "keepassxc", NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
