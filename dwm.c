@@ -600,7 +600,7 @@ buttonpress(XEvent *e)
 			} else if (ev->x < x + blw)
 				click = ClkLtSymbol;
 // else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad)) {
-			else if (ev->x > (x = selmon->ww - TEXTW(stext) - getsystraywidth() +lrpad)) {
+			else if (ev->x > (x = selmon->ww - TEXTW(stext) - getsystraywidth() + lrpad)) {
 				click = ClkStatusText;
 
 				char *text = rawstext;
@@ -957,7 +957,7 @@ drawbar(Monitor *m)
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
-	if(showsystray && m == systraytomon(m))
+	if(showsystray && m == systraytomon(m) && !systrayonleft)
 		stw = getsystraywidth();
 
 	/* draw status first so it can be overdrawn by tags later */
@@ -1045,7 +1045,7 @@ expose(XEvent *e)
 	XExposeEvent *ev = &e->xexpose;
 
 	if (ev->count == 0 && (m = wintomon(ev->window))) {
- 		drawbar(m);
+		drawbar(m);
 		if (m == selmon)
 			updatesystray();
 	}
@@ -1624,7 +1624,7 @@ resize(Client *c, int x, int y, int w, int h, int interact)
 void
 resizebarwin(Monitor *m) {
 	unsigned int w = m->ww;
-	if (showsystray && m == systraytomon(m))
+	if (showsystray && m == systraytomon(m) && !systrayonleft)
 		w -= getsystraywidth();
 	XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, w, bh);
 }
@@ -2647,10 +2647,13 @@ updatesystray(void)
 	Client *i;
 	Monitor *m = systraytomon(NULL);
 	unsigned int x = m->mx + m->mw;
+	unsigned int sw = TEXTW(stext) - lrpad + systrayspacing;
 	unsigned int w = 1;
 
 	if (!showsystray)
 		return;
+	if (systrayonleft)
+		x -= sw + lrpad / 2;
 	if (!systray) {
 		/* init systray */
 		if (!(systray = (Systray *)calloc(1, sizeof(Systray))))
