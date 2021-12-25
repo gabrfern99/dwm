@@ -1,4 +1,5 @@
 # Custom build of dwm
+![image](https://i.imgur.com/WjNP4Fs.png)
 ## Available patches
 ***
 - [Systray](https://dwm.suckless.org/patches/systray/) icons
