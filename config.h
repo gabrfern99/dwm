@@ -19,7 +19,7 @@ static int topbar             = 1;        /* 0 means bottom bar */
 #define ICONSIZE 16   /* icon size */
 #define ICONSPACING 5 /* space between icon and title */
 static const char buttonbar[]       = "";
-static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "JoyPixels:pixelsize=12:antialias=true:autohint=true", "FontAwesome:pixelsize=15:antialias=true:autohint=true", "siji:pixelsize=22n:antialias=true:autohint=true", };
+static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "JoyPixels:pixelsize=12:antialias=true:autohint=true", "FontAwesome:pixelsize=15:antialias=true:autohint=true", "siji:pixelsize=19:antialias=true:autohint=true", };
 static char normbgcolor[]           = "#1a1a1a"; /* "#222222"; */
 static char normbordercolor[]       = "#1a1a1a"; /* "#444444"; */
 static char normfgcolor[]           = "#d7d7d7"; /* "#bbbbbb"; */
@@ -74,7 +74,7 @@ const char *spcmd7[] = { "thunar", NULL };
 const char *spcmd8[] = { "st", "-n", "spneo", "-g", "150x30", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "obsidian", NULL };
-const char *spcmd11[] = { "whatsapp-nativefier", NULL };
+const char *spcmd11[] = { "whatsapp-nativefier", NULL }; // whatsapp
 const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "st", "-n", "spranger", "-g", "150x30", "-e","ranger" };
 const char *spcmd14[] = { "keepassxc", NULL };
@@ -137,7 +137,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static int nmaster     = 1;    /* number of clients in master area */
-static int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
 static const Layout layouts[] = {
@@ -323,7 +323,6 @@ static Key keys[] = {
 	/* { MODKEY,			XK_F12,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_space,	zoom,		{0} },
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
-
 	/* { 0,				XK_Print,	spawn,		SHCMD("sleep 0.4; scrot -s /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'") }, */
 	{ 0,				XK_Print,	spawn,		SHCMD("flameshot gui") },
 	{ ShiftMask,			XK_Print,	spawn,		SHCMD("maimpick") },
