@@ -19,7 +19,7 @@ static int topbar             = 1;        /* 0 means bottom bar */
 #define ICONSIZE 16   /* icon size */
 #define ICONSPACING 5 /* space between icon and title */
 static const char buttonbar[]       = "";
-static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "JoyPixels:pixelsize=12:antialias=true:autohint=true", "FontAwesome:pixelsize=15:antialias=true:autohint=true", "siji:pixelsize=19:antialias=true:autohint=true", };
+static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true","FontAwesome:pixelsize=14:antialias=true:autohint=true", "siji:pixelsize=19:antialias=true:autohint=true", };
 static char normbgcolor[]           = "#1a1a1a"; /* "#222222"; */
 static char normbordercolor[]       = "#1a1a1a"; /* "#444444"; */
 static char normfgcolor[]           = "#d7d7d7"; /* "#bbbbbb"; */
@@ -67,8 +67,8 @@ typedef struct {
 const char *spcmd1[] = { "st", "-n", "spterm", "-g", "150x30", "-e","tmux", "new-session", "-A", "-s", "spterm", NULL };
 const char *spcmd2[] = { "st", "-n", "spcalc", "-g", "50x20", "-e", "qalculate-gtk", NULL };
 const char *spcmd3[] = { "virt-manager", NULL };
-const char *spcmd4[] = { "burpsuite", NULL };
-const char *spcmd5[] = { "st", "-n", "spnewsboat", "-f" "monospace:size=11", "-g", "120x20", "-e", "newsboat", NULL };
+const char *spcmd4[] = { "java", "-jar", "~/.local/bin/burploader.jar", NULL };
+const char *spcmd5[] = { "st", "-n", "spncmpcpp", "-f" "monospace:size=11", "-g", "120x20", "-e", "ncmpcpp", NULL };
 const char *spcmd6[] = { "wireshark", NULL };
 const char *spcmd7[] = { "thunar", NULL };
 const char *spcmd8[] = { "st", "-n", "spneo", "-g", "150x30", "-e", "neomutt", NULL };
@@ -76,7 +76,7 @@ const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "obsidian", NULL };
 const char *spcmd11[] = { "whatsapp-nativefier", NULL }; // whatsapp
 const char *spcmd12[] = { "crow", NULL };
-const char *spcmd13[] = { "st", "-n", "spranger", "-g", "150x30", "-e","ranger" };
+const char *spcmd13[] = { "st", "-n", "splf", "-g", "150x30", "-e","lfub" };
 const char *spcmd14[] = { "keepassxc", NULL };
 const char *spcmd15[] = { "soundcloud-nativefier", NULL };
 const char *spcmd16[] = { "st", "-n", "spncmpcpp", "-g", "150x30", "-e", "ncmpcpp", NULL };
@@ -87,15 +87,15 @@ static Sp scratchpads[] = {
 	{"spcalc",    spcmd2},
 	{"spvirtman", spcmd3},
 	{"spburp", spcmd4},
-	{"spnewsboat", spcmd5},
-	{"spthunar", spcmd6},
-	{"spranger", spcmd7},
+	{"spncmpcpp", spcmd5},
+	{"spwire", spcmd6},
+	{"spthunar", spcmd7},
 	{"spneo", spcmd8},
 	{"sptel", spcmd9},
 	{"spobsidian", spcmd10},
 	{"spzap", spcmd11},
 	{"spcrow", spcmd12},
-	{"spranger", spcmd13},
+	{"splf", spcmd13},
 	{"spkeepassxc", spcmd14},
 	{"spsoundcloud", spcmd15},
 	{"spncmpcpp", spcmd16},
@@ -116,20 +116,20 @@ static const Rule rules[] = {
 	/* { "Virt-manager", NULL, NULL, 0, 1, 0, 0, -1 }, */
 	{ "Steam", NULL, NULL, 1 << 3, 0, 0, 0, -1 },
 	{ "mpv", NULL, NULL, 0, 1, 0, 0, -1 },
-	{ NULL,      "spterm",    NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
-	{ NULL,      "spcalc",    NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
-	/* { NULL,      "virt-manager",    NULL,       	    SPTAG(2),     1,           1,         0,        -1 }, */
-	{ NULL,      "burp-StartBurp",    NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
-	{ NULL,      "spnewsboat",    NULL,       	    SPTAG(4),     1,           1,         0,        -1 },
-	{ NULL,      "wireshark",    NULL,       	    SPTAG(5),     1,           1,         0,        -1 },
-	{ "Thunar",      NULL,    NULL,       	    SPTAG(6),     1,           1,         0,        -1 },
-	{ NULL,      "spneo",    NULL,       	    SPTAG(7),     1,           1,         0,        -1 },
-	{ NULL,      "telegram-desktop",    NULL,       	    SPTAG(8),     1,           1,         0,        -1 },
-	{ NULL,      "obsidian",    NULL,       	    SPTAG(9),     1,           1,         0,        -1 },
-	{ NULL,      "whatsapp-nativefier-d40211",    NULL,       	    SPTAG(10),     1,           1,         0,        -1 },
-	{ NULL,      "crow",    NULL,       	    SPTAG(11),     1,           1,         0,        -1 },
-	{ NULL,      "spranger",    NULL,       	    SPTAG(12),     1,           1,         0,        -1 },
-	{ NULL,      "keepassxc", NULL,       	    SPTAG(13),     1,           1,         0,        -1 },
+	{ NULL,      "spterm",    NULL,		    SPTAG(0),     1,           1,         0,        -1 },
+	{ NULL,      "spcalc",    NULL,		    SPTAG(1),     1,           1,         0,        -1 },
+	/* { NULL,      "virt-manager",    NULL,	    SPTAG(2),     1,           1,         0,        -1 }, */
+	{ NULL,      "burp-StartBurp",    NULL,		    SPTAG(3),     1,           1,         0,        -1 },
+	{ NULL,      "spncmpcpp",    NULL,		    SPTAG(4),     1,           1,         0,        -1 },
+	{ NULL,      "wireshark",    NULL,		    SPTAG(5),     1,           1,         0,        -1 },
+	{ "Thunar",      NULL,    NULL,		    SPTAG(6),     1,           1,         0,        -1 },
+	{ NULL,      "spneo",    NULL,		    SPTAG(7),     1,           1,         0,        -1 },
+	{ NULL,      "telegram-desktop",    NULL,		    SPTAG(8),     1,           1,         0,        -1 },
+	{ NULL,      "obsidian",    NULL,		    SPTAG(9),     1,           1,         0,        -1 },
+	{ NULL,      "whatsapp-nativefier-d40211",    NULL,		    SPTAG(10),     1,           1,         0,        -1 },
+	{ NULL,      "crow",    NULL,		    SPTAG(11),     1,           1,         0,        -1 },
+	{ NULL,      "splf",    NULL,		    SPTAG(12),     1,           1,         0,        -1 },
+	{ NULL,      "keepassxc", NULL,		    SPTAG(13),     1,           1,         0,        -1 },
 	{ NULL,      "soundcloud-nativefier-914611",    NULL, SPTAG(14),     1,           1,         0,        -1 },
 	{ NULL,      "spncmpcpp",    NULL,       SPTAG(15),     1,           1,         0,        -1 },
 };
@@ -142,14 +142,14 @@ static int resizehints = 0;    /* 1 means respect size hints in tiled resizals *
 #include "vanitygaps.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
- 	{ "",	tile },			/* Default: Master on lefnt, slaves on right */
+	{ "",	tile },			/* Default: Master on lefnt, slaves on right */
 	{ "TTT",	bstack },		/* Master on top, slaves on bottom */
 
 	{ "[@]",	spiral },		/* Fibonacci spiral */
 	{ "[\\]",	dwindle },		/* Decreasing in size right and leftward */
 
 	{ "H[]",	deck },			/* Master on left, slaves in monocle-like mode on right */
- 	{ "[M]",	monocle },		/* All windows on top of eachother */
+	{ "[M]",	monocle },		/* All windows on top of eachother */
 
 	{ "|M|",	centeredmaster },		/* Master in middle, slaves on sides */
 	{ ">M>",	centeredfloatingmaster },	/* Same but master floats */
@@ -273,7 +273,7 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_g,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_h,		setmfact,	{.f = -0.05} },
 	/* J and K are automatically bound above in STACKEYS */
-	{ MODKEY,			XK_l,		setmfact,      	{.f = +0.05} },
+	{ MODKEY,			XK_l,		setmfact,	{.f = +0.05} },
 	{ MODKEY,			XK_semicolon,	shiftview,	{ .i = 1 } },
 	/* { MODKEY|ShiftMask,		XK_semicolon,	shiftview,	SHCMD("") }, */
 	{ MODKEY,			XK_apostrophe,	togglescratch,		{.ui = 1 } },
@@ -281,7 +281,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_Return,	spawn,		{.v = termcmd } },
 	{ MODKEY|ShiftMask,		XK_Return,	togglescratch,	{.ui = 0 } },
 
-	{ MODKEY,			XK_z,		incrgaps,	{.i = +1 } },
+	{ MODKEY,			XK_z,		togglescratch,	{.ui = 12 } },
 	{ MODKEY|ShiftMask,		XK_z,		incrgaps,	{.i = -1 } },
 	/* { MODKEY,			XK_x,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_x, togglescratch, {.ui = 10} },
