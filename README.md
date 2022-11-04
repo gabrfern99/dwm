@@ -13,6 +13,7 @@
 - [Clickable statusbar](https://dwm.suckless.org/patches/statuscmd/) with this build of [dwmblocks](https://github.com/LukeSmithxyz/dwmblocks)
 - [Reads Xresources](https://dwm.suckless.org/patches/xresources/) colors and variables
 - Support for multiple [scratchpads](https://dwm.suckless.org/patches/scratchpads/)
+- [preserveonrestart](https://dwm.suckless.org/patches/preserveonrestart/) preserves clients on old tags
 ***
 
 ## Installation
