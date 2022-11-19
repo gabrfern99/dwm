@@ -14,6 +14,7 @@
 - [Reads Xresources](https://dwm.suckless.org/patches/xresources/) colors and variables
 - Support for multiple [scratchpads](https://dwm.suckless.org/patches/scratchpads/)
 - [preserveonrestart](https://dwm.suckless.org/patches/preserveonrestart/) preserves clients on old tags
+- [integrated status text](https://dwm.suckless.org/patches/integrated-status-text/) embedded async dwmblocks in dwm 
 ***
 
 ## Installation
