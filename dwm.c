@@ -636,7 +636,7 @@ buttonpress(XEvent *e)
 			    {
 			      if (*blockoutput[i] == '\0') /* ignore command that output NULL or '\0' */
 				continue;
-			      len = TEXTW(blockoutput[i]) - lrpad / 2+2 + TEXTW(delimiter) - lrpad/2-2;
+			      len = TEXTW(blockoutput[i]) - lrpad + TEXTW(delimiter) - lrpad;
 			      x += len;
 			      if (ev->x <= x && ev->x >= x - len) { /* if the mouse is between the block area */
 				blocknum = i; /* store what block the mouse is clicking */
@@ -1325,7 +1325,7 @@ getstatus(int width)
     /* re-load the scheme with the new colors */
     scheme[SchemeStatus] = drw_scm_create(drw, cols, 3);
     drw_setscheme(drw, scheme[SchemeStatus]); /* 're-set' the scheme */
-    len = TEXTW(blockoutput[i]);
+    len = TEXTW(blockoutput[i]) - lrpad;
     all -= len;
     
     drw_text(drw, all, 0, len, bh, 0, blockoutput[i], 0);
