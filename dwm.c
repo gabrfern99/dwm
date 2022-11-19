@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <poll.h>
 #include <limits.h>
 #include <stdint.h>
 #include <sys/types.h>
@@ -184,6 +185,14 @@ typedef struct {
 	int monitor;
 } Rule;
 
+typedef struct {
+  const char *color;
+  const char *command;
+  const unsigned int interval;
+  const unsigned int signal;
+} Block;
+
+
 typedef struct Systray   Systray;
 struct Systray {
 	Window win;
@@ -234,9 +243,13 @@ static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
 static Picture geticonprop(Window w, unsigned int *icw, unsigned int *ich);
 static Atom getatomprop(Client *c, Atom prop);
-static int getdwmblockspid();
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
+static void getcmd(int i, char *button);
+static void getcmds(int time);
+static void getsigcmds(int signal);
+static int gcd(int a, int b);
+static int getstatus(int width);
 static unsigned int getsystraywidth();
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void grabbuttons(Client *c, int focused);
@@ -264,10 +277,10 @@ static void resizemouse(const Arg *arg);
 static void resizerequest(XEvent *e);
 static void restack(Monitor *m);
 static void run(void);
-static void runAutostart(void);
 static void scan(void);
 static int sendevent(Window w, Atom proto, int m, long d0, long d1, long d2, long d3, long d4);
 static void sendmon(Client *c, Monitor *m);
+static void sendstatusbar(const Arg *arg);
 static void setclientstate(Client *c, long state);
 static void setclienttagprop(Client *c);
 static void setfocus(Client *c);
@@ -275,10 +288,11 @@ static void setfullscreen(Client *c, int fullscreen);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setup(void);
+static void setsignal(int sig, void (*handler)(int sig));
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
+static void sigalrm(int unused);
 static void sigchld(int unused);
-static void sigdwmblocks(const Arg *arg);
 static void sighup(int unused);
 static void sigterm(int unused);
 static void spawn(const Arg *arg);
@@ -333,10 +347,10 @@ static pid_t winpid(Window w);
 /* variables */
 static Systray *systray =  NULL;
 static const char broken[] = "broken";
-static char stext[256];
-static char rawstext[256];
-static int dwmblockssig;
-pid_t dwmblockspid = 0;
+static unsigned int blocknum; /* blocks idx in mouse click */
+static unsigned int stsw = 0; /* status width */
+static unsigned int sleepinterval = 0, maxinterval = 0, count = 0;
+static unsigned int execlock = 0; /* ensure only one child process exists per block at an instance */
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
 static int bh, blw = 0;      /* bar geometry */
@@ -374,6 +388,9 @@ static xcb_connection_t *xcon;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
+
+static char blockoutput[LENGTH(blocks)][CMDLENGTH + 1] = {0};
+static int pipes[LENGTH(blocks)][2];
 
 /* compile-time check if all tags fit into an unsigned int bit array. */
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
@@ -607,25 +624,25 @@ buttonpress(XEvent *e)
 			} else if (ev->x < x + blw)
 				click = ClkLtSymbol;
 // else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad)) {
-			else if (ev->x > (x = selmon->ww - TEXTW(stext) - getsystraywidth() + lrpad)) {
-				click = ClkStatusText;
-
-				char *text = rawstext;
-				int i = -1;
-				char ch;
-				dwmblockssig = 0;
-				while (text[++i]) {
-					if ((unsigned char)text[i] < ' ') {
-						ch = text[i];
-						text[i] = '\0';
-						x += TEXTW(text) - lrpad;
-						text[i] = ch;
-						text += i+1;
-						i = -1;
-						if (x >= ev->x) break;
-						dwmblockssig = ch;
-					}
-				}
+			else if (ev->x > (x = selmon->ww - stsw)) {
+			  click = ClkStatusText;
+			  int len, i;
+			  
+                          #if INVERSED
+			  for (i = LENGTH(blocks) - 1; i >= 0; i--)
+                          #else
+			  for (i = 0; i < LENGTH(blocks); i++)
+                          #endif /* INVERSED */
+			    {
+			      if (*blockoutput[i] == '\0') /* ignore command that output NULL or '\0' */
+				continue;
+			      len = TEXTW(blockoutput[i]) - lrpad / 2+2 + TEXTW(delimiter) - lrpad/2-2;
+			      x += len;
+			      if (ev->x <= x && ev->x >= x - len) { /* if the mouse is between the block area */
+				blocknum = i; /* store what block the mouse is clicking */
+				break;
+			      }
+			    }
 			} else
 				click = ClkWinTitle;
 		}
@@ -970,9 +987,10 @@ drawbar(Monitor *m)
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon || 1) { /* status is only drawn on selected monitor */
 		//drw_setscheme(drw, scheme[SchemeNorm]);
-		drw_setscheme(drw, scheme[SchemeStatus]);
-		sw = TEXTW(stext) - lrpad / 2 + 2; /* 2px right padding */
-		drw_text(drw, m->ww - sw - stw, 0, sw, bh, lrpad / 2 - 2, stext, 0);
+		//drw_setscheme(drw, scheme[SchemeStatus]);
+		//sw = TEXTW(stext) - lrpad / 2 + 2; /* 2px right padding */
+		//drw_text(drw, m->ww - sw - stw, 0, sw, bh, lrpad / 2 - 2, stext, 0);
+	  sw = getstatus(m->ww);
 	}
 
 	resizebarwin(m);
@@ -1210,18 +1228,6 @@ geticonprop(Window win, unsigned int *picw, unsigned int *pich)
 }
 
 int
-getdwmblockspid()
-{
-	char buf[16];
-	FILE *fp = popen("pidof -s dwmblocks", "r");
-	fgets(buf, sizeof(buf), fp);
-	pid_t pid = strtoul(buf, NULL, 10);
-	pclose(fp);
-	dwmblockspid = pid;
-	return pid != 0 ? 0 : -1;
-}
-
-int
 getrootptr(int *x, int *y)
 {
 	int di;
@@ -1248,6 +1254,107 @@ getstate(Window w)
 	XFree(p);
 	return result;
 }
+
+void
+getcmd(int i, char *button)
+{
+  if (!selmon->showbar)
+    return;
+  
+  if (execlock & 1 << i) { /* block is already running */
+    //fprintf(stderr, "dwm: ignoring block %d, command %s\n", i, blocks[i].command);
+    return;
+  }
+
+  /* lock execution of block until current instance finishes execution */
+  execlock |= 1 << i;
+  
+  if (fork() == 0) {
+    if (dpy)
+      close(ConnectionNumber(dpy));
+    dup2(pipes[i][1], STDOUT_FILENO);
+    close(pipes[i][0]);
+    close(pipes[i][1]);
+
+    if (button)
+      setenv("BLOCK_BUTTON", button, 1);
+    execlp("/bin/sh", "sh", "-c", blocks[i].command, (char *) NULL);
+    fprintf(stderr, "dwm: block %d, execlp %s", i, blocks[i].command);
+    perror(" failed");
+    exit(EXIT_SUCCESS);
+  }
+}
+
+void
+getcmds(int time)
+{
+  int i;
+  for (i = 0; i < LENGTH(blocks); i++)
+    if ((blocks[i].interval != 0 && time % blocks[i].interval == 0) || time == -1)
+      getcmd(i, NULL);
+}
+
+void
+getsigcmds(int signal)
+{
+  int i;
+  unsigned int sig = signal - SIGRTMIN;
+  for (i = 0; i < LENGTH(blocks); i++)
+    if (blocks[i].signal == sig)
+      getcmd(i, NULL);
+}
+
+getstatus(int width)
+{
+  int i, len, all = width - getsystraywidth(), delimlen = TEXTW(delimiter) - lrpad;
+  char fgcol[8];
+                               /* fg           bg */
+  const char *cols[8] =   { fgcol, colors[SchemeStatus][ColBg] };
+  //uncomment to inverse the colors
+  //const char *cols[8] =         { colors[SchemeStatus][ColBg], fgcol };
+
+  #if INVERSED
+  for (i = 0; i < LENGTH(blocks); i++)
+  #else
+  for (i = LENGTH(blocks) - 1; i >= 0; i--)
+  #endif /* INVERSED */
+  {
+    if (*blockoutput[i] == '\0') /* ignore command that output NULL or '\0' */
+      continue;
+    strncpy(fgcol, blocks[i].color, 8);
+    /* re-load the scheme with the new colors */
+    scheme[SchemeStatus] = drw_scm_create(drw, cols, 3);
+    drw_setscheme(drw, scheme[SchemeStatus]); /* 're-set' the scheme */
+    len = TEXTW(blockoutput[i]);
+    all -= len;
+    
+    drw_text(drw, all, 0, len, bh, 0, blockoutput[i], 0);
+    /* draw delimiter */
+    if (*delimiter == '\0') /* ignore no delimiter */
+      continue;
+    drw_setscheme(drw, scheme[SchemeNorm]);
+    all -= delimlen;
+    drw_text(drw, all, 0, delimlen, bh, 0, delimiter, 0);
+  }
+
+  return stsw = width - all;
+}
+
+int
+gcd(int a, int b)
+{
+  int temp;
+
+  while (b > 0) {
+    temp = a % b;
+    a = b;
+    b = temp;
+  }
+  
+  return a;
+}
+
+
 
 unsigned int
 getsystraywidth()
@@ -1838,18 +1945,103 @@ restack(Monitor *m)
 void
 run(void)
 {
-	XEvent ev;
-	/* main event loop */
-	XSync(dpy, False);
-	while (running && !XNextEvent(dpy, &ev))
-		if (handler[ev.type])
-			handler[ev.type](&ev); /* call handler */
+  int i;
+  XEvent ev;
+  struct pollfd fds[LENGTH(blocks) + 1] = {0};
+
+  fds[0].fd = ConnectionNumber(dpy);
+  fds[0].events = POLLIN;
+
+  #if INVERSED
+  for (i = LENGTH(blocks) - 1; i >= 0; i--)
+  #else
+  for (i = 0; i < LENGTH(blocks); i++)
+  #endif /* INVERSED */
+  {
+    pipe(pipes[i]);
+    fds[i + 1].fd = pipes[i][0];
+    fds[i + 1].events = POLLIN;
+    getcmd(i, NULL);
+    if (blocks[i].interval) {
+      maxinterval = MAX(blocks[i].interval, maxinterval);
+      sleepinterval = gcd(blocks[i].interval, sleepinterval);
+    }
+  }
+  
+  alarm(sleepinterval);
+  
+  /* main event loop */
+  XSync(dpy, False);
+  while (running) {
+    
+    /* bar hidden, then skip poll */
+    if (!selmon->showbar) {
+      XNextEvent(dpy, &ev);
+      if (handler[ev.type])
+	handler[ev.type](&ev); /* call handler */
+      continue;
+    }
+
+    if ((poll(fds, LENGTH(blocks) + 1, -1)) == -1) {
+      /* FIXME other than SIGALRM and the real time signals,
+       * there seems to be a signal being que if using
+       * 'xsetroot -name' sutff */
+      if (errno == EINTR) /* signal caught */
+	continue;
+      fprintf(stderr, "dwm: poll ");
+      perror("failed");
+      exit(EXIT_FAILURE);
+    }
+
+    /* handle display fd */
+    if (fds[0].revents & POLLIN) {
+      while (running && XPending(dpy)) {
+	XNextEvent(dpy, &ev);
+	if (handler[ev.type])
+	  handler[ev.type](&ev); /* call handler */
+      }
+    } else if (fds[0].revents & POLLHUP) {
+      fprintf(stderr, "dwm: main event loop, hang up");
+      perror(" failed");
+      exit(EXIT_FAILURE);
+    }
+
+    /* handle blocks */
+    for (i = 0; i < LENGTH(blocks); i++) {
+      if (fds[i + 1].revents & POLLIN) {
+	/* empty buffer with CMDLENGTH + 1 byte for the null terminator */
+	int bt = read(fds[i + 1].fd, blockoutput[i], CMDLENGTH);
+	/* remove lock for the current block */
+	execlock &= ~(1 << i);
+	
+	if (bt == -1) { /* if read failed */
+	  fprintf(stderr, "dwm: read failed in block %s\n", blocks[i].command);
+	  perror(" failed");
+	  continue;
+	}
+	
+	if (blockoutput[i][bt - 1] == '\n') /* chop off ending new line, if one is present */
+	  blockoutput[i][bt - 1] = '\0';
+	else /* NULL terminate the string */
+	  blockoutput[i][bt++] = '\0';
+
+	drawbar(selmon);
+	updatesystray();
+      } else if (fds[i + 1].revents & POLLHUP) {
+	fprintf(stderr, "dwm: block %d hangup", i);
+	perror(" failed");
+	exit(EXIT_FAILURE);
+      }
+    }
+  }
+
+  /* close the pipes after running */
+  for (i = 0; i < LENGTH(blocks); i++) {
+    close(pipes[i][0]);
+    close(pipes[i][1]);
+  }
 }
 
-void
-runAutostart(void) {
-	system("killall -q dwmblocks; dwmblocks &");
-}
 
 void
 scan(void)
@@ -1894,6 +2086,14 @@ sendmon(Client *c, Monitor *m)
 	focus(NULL);
 	arrange(NULL);
 }
+
+void
+sendstatusbar(const Arg *arg)
+{
+  char button[2] = { '0' + arg->i & 0xff, '\0' };
+  getcmd(blocknum, button);
+}
+
 
 void
 setclientstate(Client *c, long state)
@@ -2046,7 +2246,21 @@ setup(void)
 	Atom utf8string;
 
 	/* clean up any zombies immediately */
-	sigchld(0);
+	setsignal(SIGCHLD, sigchld); /* zombies */
+	setsignal(SIGALRM, sigalrm); /* timer */
+
+	#ifdef __linux__
+	/* handle defined real time signals (linux only) */
+	for (i = 0; i < LENGTH(blocks); i++)
+	  if (blocks[i].signal)
+	    setsignal(SIGRTMIN + blocks[i].signal, getsigcmds);
+        #endif /* __linux__ */
+
+	/* pid as an enviromental variable */
+	char envpid[16];
+	snprintf(envpid, LENGTH(envpid), "%d", getpid());
+	setenv("STATUSBAR", envpid, 1);
+
 
 	signal(SIGHUP, sighup);
 	signal(SIGTERM, sigterm);
@@ -2125,6 +2339,22 @@ setup(void)
 	focus(NULL);
 }
 
+void
+setsignal(int sig, void (*handler)(int unused))
+{
+       struct sigaction sa;
+
+       sa.sa_handler = handler;
+       sigemptyset(&sa.sa_mask);
+       sa.sa_flags = SA_NOCLDSTOP | SA_RESTART;
+
+       if (sigaction(sig, &sa, 0) == -1) {
+               fprintf(stderr, "signal %d ", sig);
+               perror("failed to setup");
+               exit(EXIT_FAILURE);
+       }
+}
+
 
 void
 seturgent(Client *c, int urg)
@@ -2161,11 +2391,19 @@ showhide(Client *c)
 	}
 }
 
+
+
+void
+sigalrm(int unused)
+{
+       getcmds(count);
+       alarm(sleepinterval);
+       count = (count + sleepinterval - 1) % maxinterval + 1;
+}
+
 void
 sigchld(int unused)
 {
-	if (signal(SIGCHLD, sigchld) == SIG_ERR)
-		die("can't install SIGCHLD handler:");
 	while (0 < waitpid(-1, NULL, WNOHANG));
 }
 
@@ -2183,22 +2421,6 @@ sigterm(int unused)
 	quit(&a);
 }
 
-void
-sigdwmblocks(const Arg *arg)
-{
-	union sigval sv;
-	sv.sival_int = 0 | (dwmblockssig << 8) | arg->i;
-	if (!dwmblockspid)
-		if (getdwmblockspid() == -1)
-			return;
-
-	if (sigqueue(dwmblockspid, SIGUSR1, sv) == -1) {
-		if (errno == ESRCH) {
-			if (!getdwmblockspid())
-				sigqueue(dwmblockspid, SIGUSR1, sv);
-		}
-	}
-}
 
 void
 spawn(const Arg *arg)
@@ -2702,10 +2924,6 @@ updatesizehints(Client *c)
 void
 updatestatus(void)
 {
-	if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext)))
-		strcpy(stext, "dwm-"VERSION);
-	else
-		copyvalidchars(stext, rawstext);
 	drawbar(selmon);
 	updatesystray();
 }
@@ -2768,7 +2986,7 @@ updatesystray(void)
 	Client *i;
 	Monitor *m = systraytomon(NULL);
 	unsigned int x = m->mx + m->mw;
-	unsigned int sw = TEXTW(stext) - lrpad + systrayspacing;
+	//unsigned int sw = TEXTW(stext) - lrpad + systrayspacing;
 	unsigned int w = 1;
 
 	if (!showsystray)
@@ -3166,7 +3384,6 @@ main(int argc, char *argv[])
 		die("pledge");
 #endif /* __OpenBSD__ */
 	scan();
-	runAutostart();
 	run();
 	if(restart) execvp(argv[0], argv);
 	cleanup();

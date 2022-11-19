@@ -19,7 +19,7 @@ static int topbar             = 1;        /* 0 means bottom bar */
 #define ICONSIZE 16   /* icon size */
 #define ICONSPACING 5 /* space between icon and title */
 static const char buttonbar[]       = "";
-static char *fonts[]          = { "Fira Code:size=9:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true","FontAwesome:pixelsize=14:antialias=true:autohint=true", "siji:pixelsize=19:antialias=true:autohint=true", };
+static char *fonts[]          = { "JetBrains Mono:size=10:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true","FontAwesome:pixelsize=14:antialias=true:autohint=true", "siji:pixelsize=19:antialias=true:autohint=true", };
 static char normbgcolor[]           = "#1a1a1a"; /* "#222222"; */
 static char normbordercolor[]       = "#1a1a1a"; /* "#444444"; */
 static char normfgcolor[]           = "#d7d7d7"; /* "#bbbbbb"; */
@@ -51,14 +51,35 @@ static char col16[]  = "#2B3833";
 /* Here is the color array. Check the 'color.h' file to see the names' */
 static char *colors[][3]      = {
 	/*               fg         bg         border           code */
-	[SchemeNorm]     = { fore,      back,      border   }, // \x0b
+	[SchemeNorm]     = { fore,      "#121212",      border   }, // \x0b
 	[SchemeSel]      = { fore,      back,      back   }, // \x0c
-	[SchemeStatus]   = { fore,      back,      border }, // \x0d
+	[SchemeStatus]   = { fore,      "#121212",      NULL }, // \x0d
 	[SchemeTagsSel]  = { back,      fore,   border }, // \x0e
 	[SchemeTagsNorm] = { fore,      back,   border }, // \x0f
 	[SchemeInfoSel]  = { normbgcolor,      fore,      border }, // \x10
 	[SchemeInfoNorm] = { normbgcolor,      fore,      border }, // \x11
 };
+
+static const Block blocks[] = {
+       /* fg     command                               interval        signal */
+       { fore, "pacpackages",                        1,             1},
+       { fore, "memory",                        10,             2},
+       { fore, "cpu",                        10,             3},
+       { fore, "echo $(cpubars)",                        1,             4},
+       { fore, "mailbox",                        180,             5},
+       { fore, "nettraf",                        1,             6},
+       { fore, "echo $(volume)",                        0,             21},
+       { fore, "clock",                         60,           8},
+       
+};
+
+/* inverse the order of the blocks, comment to disable */
+#define INVERSED       0
+/* delimeter between blocks commands. NULL character ('\0') means no delimeter. */
+static char delimiter[] = " ";
+/* max number of character that one block command can output */
+#define CMDLENGTH      90
+
 
 typedef struct {
 	const char *name;
@@ -124,7 +145,7 @@ static const Rule rules[] = {
 	{ NULL,      "wireshark",    NULL,		    SPTAG(5),     1,           1,         0,        -1 },
 	{ "Thunar",      NULL,    NULL,		    SPTAG(6),     1,           1,         0,        -1 },
 	{ NULL,      "spneo",    NULL,		    SPTAG(7),     1,           1,         0,        -1 },
-	{ NULL,      "telegram-desktop",    NULL,		    SPTAG(8),     1,           1,         0,        -1 },
+	//{ NULL,      "telegram-desktop",    NULL,		    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "obsidian",    NULL,		    SPTAG(9),     1,           1,         0,        -1 },
 	{ NULL,      "whatsapp-nativefier-d40211",    NULL,		    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,		    SPTAG(11),     1,           1,         0,        -1 },
@@ -387,11 +408,11 @@ static Button buttons[] = {
 	{ ClkRootWin,           0,              Button3,        spawn,          SHCMD("rofi.sh") },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
-	{ ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
-	{ ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
-	{ ClkStatusText,        0,              Button4,        sigdwmblocks,   {.i = 4} },
-	{ ClkStatusText,        0,              Button5,        sigdwmblocks,   {.i = 5} },
+	{ ClkStatusText,        0,              Button1,        sendstatusbar,   {.i = 1} },
+	{ ClkStatusText,        0,              Button2,        sendstatusbar,   {.i = 2} },
+	{ ClkStatusText,        0,              Button3,        sendstatusbar,   {.i = 3} },
+	{ ClkStatusText,        0,              Button4,        sendstatusbar,   {.i = 4} },
+	{ ClkStatusText,        0,              Button5,        sendstatusbar,   {.i = 5} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
