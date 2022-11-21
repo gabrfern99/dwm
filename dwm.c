@@ -124,7 +124,7 @@ struct Client {
 	float mina, maxa;
 	int x, y, w, h;
 	int oldx, oldy, oldw, oldh;
-	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
+        int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;;
 	int bw, oldbw;
 	unsigned int tags;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, isterminal, noswallow, issticky;
@@ -264,7 +264,7 @@ static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
 static Client *nexttiled(Client *c);
-static void pop(Client *);
+static void pop(Client *c);
 static void propertynotify(XEvent *e);
 static void pushstack(const Arg *arg);
 static void quit(const Arg *arg);
@@ -318,7 +318,6 @@ static void updatebars(void);
 static void updateclientlist(void);
 static int updategeom(void);
 static void updatenumlockmask(void);
-static void updatesizehints(Client *c);
 static void updatestatus(void);
 static void updatesystray(void);
 static void updatesystrayicongeom(Client *i, int w, int h);
@@ -326,6 +325,7 @@ static void updatesystrayiconstate(Client *i, XPropertyEvent *ev);
 static void updatetitle(Client *c);
 static void updateicon(Client *c);
 static void updatewindowtype(Client *c);
+static void updatesizehints(Client *c);
 static void updatewmhints(Client *c);
 static void view(const Arg *arg);
 static Client *wintoclient(Window w);
@@ -353,7 +353,7 @@ static unsigned int sleepinterval = 0, maxinterval = 0, count = 0;
 static unsigned int execlock = 0; /* ensure only one child process exists per block at an instance */
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
-static int bh, blw = 0;      /* bar geometry */
+static int bh;      /* bar height */
 static int lrpad;            /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int numlockmask = 0;
@@ -472,6 +472,8 @@ applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
 	if (*w < bh)
 		*w = bh;
 	if (resizehints || c->isfloating || !c->mon->lt[c->mon->sellt]->arrange) {
+	        if (!c->hintsvalid)
+		  updatesizehints(c);
 		/* see last two sentences in ICCCM 4.1.2.3 */
 		baseismin = c->basew == c->minw && c->baseh == c->minh;
 		if (!baseismin) { /* temporarily remove base dimensions */
@@ -621,7 +623,7 @@ buttonpress(XEvent *e)
 			if (i < LENGTH(tags)) {
 				click = ClkTagBar;
 				arg.ui = 1 << i;
-			} else if (ev->x < x + blw)
+			} else if (ev->x < x + TEXTW(selmon->ltsymbol))
 				click = ClkLtSymbol;
 // else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad)) {
 			else if (ev->x > (x = selmon->ww - stsw)) {
@@ -694,6 +696,7 @@ cleanup(void)
 		drw_cur_free(drw, cursor[i]);
 	for (i = 0; i < LENGTH(colors); i++)
 		free(scheme[i]);
+	free(scheme);
 	XDestroyWindow(dpy, wmcheckwin);
 	drw_free(drw);
 	XSync(dpy, False);
@@ -981,6 +984,10 @@ drawbar(Monitor *m)
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
+
+	if (!m->showbar)
+	  return;
+	
 	if(showsystray && m == systraytomon(m) && !systrayonleft)
 		stw = getsystraywidth();
 
@@ -1001,7 +1008,7 @@ drawbar(Monitor *m)
 			urg |= c->tags;
 	}
 	x = 0;
-	w = blw = TEXTW(buttonbar);
+	w = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, buttonbar, 0);
 	for (i = 0; i < LENGTH(tags); i++) {
@@ -1014,7 +1021,7 @@ drawbar(Monitor *m)
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 		x += w;
 	}
-	w = blw = TEXTW(m->ltsymbol);
+	w = TEXTW(m->ltsymbol);
 	//drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_setscheme(drw, scheme[SchemeTagsNorm]);
 	x= drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
@@ -1275,7 +1282,7 @@ getcmd(int i, char *button)
     dup2(pipes[i][1], STDOUT_FILENO);
     close(pipes[i][0]);
     close(pipes[i][1]);
-
+    
     if (button)
       setenv("BLOCK_BUTTON", button, 1);
     execlp("/bin/sh", "sh", "-c", blocks[i].command, (char *) NULL);
@@ -1290,7 +1297,7 @@ getcmds(int time)
 {
   int i;
   for (i = 0; i < LENGTH(blocks); i++)
-    if ((blocks[i].interval != 0 && time % blocks[i].interval == 0) || time == -1)
+    if ((blocks[i].interval != 0 && time % blocks[i].interval == 0) || blocks[i].interval == 0)
       getcmd(i, NULL);
 }
 
@@ -1524,7 +1531,6 @@ manage(Window w, XWindowAttributes *wa)
 	XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
 	configure(c); /* propagates border_width, if size doesn't change */
 	updatewindowtype(c);
-	updatesizehints(c);
 	updatewmhints(c);
 	{
 	  int format;
@@ -1548,7 +1554,7 @@ manage(Window w, XWindowAttributes *wa)
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
 	if (!c->isfloating)
-		c->isfloating = c->oldstate = trans != None || c->isfixed;
+		c->isfloating = c->oldstate = t || c->isfixed;
 	if (c->isfloating)
 		XRaiseWindow(dpy, c->win);
 	attach(c);
@@ -1762,7 +1768,7 @@ propertynotify(XEvent *e)
 				arrange(c->mon);
 			break;
 		case XA_WM_NORMAL_HINTS:
-			updatesizehints(c);
+			c->hintsvalid = 0;
 			break;
 		case XA_WM_HINTS:
 			updatewmhints(c);
@@ -1948,7 +1954,7 @@ run(void)
   int i;
   XEvent ev;
   struct pollfd fds[LENGTH(blocks) + 1] = {0};
-
+  
   fds[0].fd = ConnectionNumber(dpy);
   fds[0].events = POLLIN;
 
@@ -1963,8 +1969,8 @@ run(void)
     fds[i + 1].events = POLLIN;
     getcmd(i, NULL);
     if (blocks[i].interval) {
-      maxinterval = MAX(blocks[i].interval, maxinterval);
-      sleepinterval = gcd(blocks[i].interval, sleepinterval);
+     maxinterval = MAX(blocks[i].interval, maxinterval);
+     sleepinterval = gcd(blocks[i].interval, sleepinterval);
     }
   }
   
@@ -2026,7 +2032,6 @@ run(void)
 	  blockoutput[i][bt++] = '\0';
 
 	drawbar(selmon);
-	updatesystray();
       } else if (fds[i + 1].revents & POLLHUP) {
 	fprintf(stderr, "dwm: block %d hangup", i);
 	perror(" failed");
@@ -2034,7 +2039,7 @@ run(void)
       }
     }
   }
-
+  
   /* close the pipes after running */
   for (i = 0; i < LENGTH(blocks); i++) {
     close(pipes[i][0]);
@@ -2249,12 +2254,12 @@ setup(void)
 	setsignal(SIGCHLD, sigchld); /* zombies */
 	setsignal(SIGALRM, sigalrm); /* timer */
 
-	#ifdef __linux__
+	//#ifdef __linux__
 	/* handle defined real time signals (linux only) */
 	for (i = 0; i < LENGTH(blocks); i++)
 	  if (blocks[i].signal)
 	    setsignal(SIGRTMIN + blocks[i].signal, getsigcmds);
-        #endif /* __linux__ */
+        //#endif /* __linux__ */
 
 	/* pid as an enviromental variable */
 	char envpid[16];
@@ -2342,17 +2347,17 @@ setup(void)
 void
 setsignal(int sig, void (*handler)(int unused))
 {
-       struct sigaction sa;
+  struct sigaction sa;
+  
+  sa.sa_handler = handler;
+  sigemptyset(&sa.sa_mask);
+  sa.sa_flags = SA_NOCLDSTOP | SA_RESTART;
 
-       sa.sa_handler = handler;
-       sigemptyset(&sa.sa_mask);
-       sa.sa_flags = SA_NOCLDSTOP | SA_RESTART;
-
-       if (sigaction(sig, &sa, 0) == -1) {
-               fprintf(stderr, "signal %d ", sig);
-               perror("failed to setup");
-               exit(EXIT_FAILURE);
-       }
+  if (sigaction(sig, &sa, 0) == -1) {
+    fprintf(stderr, "signal %d ", sig);
+    perror("failed to setup");
+    exit(EXIT_FAILURE);
+  }
 }
 
 
@@ -2391,20 +2396,18 @@ showhide(Client *c)
 	}
 }
 
-
-
 void
 sigalrm(int unused)
 {
-       getcmds(count);
-       alarm(sleepinterval);
-       count = (count + sleepinterval - 1) % maxinterval + 1;
+  getcmds(count);
+  alarm(sleepinterval);
+  count = (count + sleepinterval - 1) % maxinterval + 1;
 }
 
 void
 sigchld(int unused)
 {
-	while (0 < waitpid(-1, NULL, WNOHANG));
+  while (0 < waitpid(-1, NULL, WNOHANG));
 }
 
 void
@@ -2686,6 +2689,7 @@ unmanage(Client *c, int destroyed)
 		wc.border_width = c->oldbw;
 		XGrabServer(dpy); /* avoid race conditions */
 		XSetErrorHandler(xerrordummy);
+		XSelectInput(dpy, c->win, NoEventMask);
 		XConfigureWindow(dpy, c->win, CWBorderWidth, &wc); /* restore border */
 		XUngrabButton(dpy, AnyButton, AnyModifier, c->win);
 		setclientstate(c, WithdrawnState);
@@ -2919,13 +2923,14 @@ updatesizehints(Client *c)
 	} else
 		c->maxa = c->mina = 0.0;
 	c->isfixed = (c->maxw && c->maxh && c->maxw == c->minw && c->maxh == c->minh);
+	c->hintsvalid = 1;
 }
 
 void
 updatestatus(void)
 {
-	drawbar(selmon);
-	updatesystray();
+  drawbar(selmon);
+  updatesystray();
 }
 void
 updatesystrayicongeom(Client *i, int w, int h)

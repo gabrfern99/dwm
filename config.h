@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx  = 4;        /* border pixel of windows */
+static unsigned int borderpx  = 2;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft = 0;    /* 0: systray in the right corner, >0: systray on left of status text */
@@ -62,13 +62,14 @@ static char *colors[][3]      = {
 
 static const Block blocks[] = {
        /* fg     command                               interval        signal */
-       { fore, "pacpackages",                        1,             1},
-       { fore, "memory",                        10,             2},
+       { fore, "pacpackages",                        1,             8},
+       { fore, "srvstatus",                        10,             20},
+       { fore, "memory",                        5,             2},
        { fore, "cpu",                        10,             3},
        { fore, "echo $(cpubars)",                        1,             4},
        { fore, "mailbox",                        180,             5},
        { fore, "nettraf",                        1,             6},
-       { fore, "echo $(volume)",                        0,             21},
+       { fore, "volume",                        0,             10},
        { fore, "clock",                         60,           8},
        
 };
@@ -145,7 +146,7 @@ static const Rule rules[] = {
 	{ NULL,      "wireshark",    NULL,		    SPTAG(5),     1,           1,         0,        -1 },
 	{ "Thunar",      NULL,    NULL,		    SPTAG(6),     1,           1,         0,        -1 },
 	{ NULL,      "spneo",    NULL,		    SPTAG(7),     1,           1,         0,        -1 },
-	//{ NULL,      "telegram-desktop",    NULL,		    SPTAG(8),     1,           1,         0,        -1 },
+	{ NULL,      "telegram-desktop",    NULL,		    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "obsidian",    NULL,		    SPTAG(9),     1,           1,         0,        -1 },
 	{ NULL,      "whatsapp-nativefier-d40211",    NULL,		    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,		    SPTAG(11),     1,           1,         0,        -1 },
