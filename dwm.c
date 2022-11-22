@@ -1008,7 +1008,7 @@ drawbar(Monitor *m)
 			urg |= c->tags;
 	}
 	x = 0;
-	w = TEXTW(m->ltsymbol);
+	w = TEXTW(buttonbar);
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, buttonbar, 0);
 	for (i = 0; i < LENGTH(tags); i++) {
@@ -1140,7 +1140,7 @@ focusstack(const Arg *arg)
 	int i = stackpos(arg);
 	Client *c, *p;
 
-	if (i < 0 || !selmon->sel || selmon->sel->isfullscreen)
+	if (i < 0 || !selmon->sel || (selmon->sel->isfullscreen && lockfullscreen))
 		return;
 
 	for(p = NULL, c = selmon->clients; c && (i || !ISVISIBLE(c));
@@ -1297,7 +1297,7 @@ getcmds(int time)
 {
   int i;
   for (i = 0; i < LENGTH(blocks); i++)
-    if ((blocks[i].interval != 0 && time % blocks[i].interval == 0) || blocks[i].interval == 0)
+    if ((blocks[i].interval != 0 && time % blocks[i].interval == 0) || time == -1)
       getcmd(i, NULL);
 }
 
@@ -1516,14 +1516,13 @@ manage(Window w, XWindowAttributes *wa)
 		term = termforwin(c);
 	}
 
-	if (c->x + WIDTH(c) > c->mon->mx + c->mon->mw)
-		c->x = c->mon->mx + c->mon->mw - WIDTH(c);
-	if (c->y + HEIGHT(c) > c->mon->my + c->mon->mh)
-		c->y = c->mon->my + c->mon->mh - HEIGHT(c);
+	if (c->x + WIDTH(c) > c->mon->wx + c->mon->ww)
+	  c->x = c->mon->wx + c->mon->ww - WIDTH(c);
+	if (c->y + HEIGHT(c) > c->mon->wy + c->mon->wh)
+	  c->y = c->mon->wy + c->mon->wh - HEIGHT(c);
+	c->x = MAX(c->x, c->mon->wx);
 	c->x = MAX(c->x, c->mon->mx);
-	/* only fix client y-offset, if the client center might cover the bar */
-	c->y = MAX(c->y, ((c->mon->by == c->mon->my) && (c->x + (c->w / 2) >= c->mon->wx)
-		&& (c->x + (c->w / 2) < c->mon->wx + c->mon->ww)) ? bh : c->mon->my);
+	c->y = MAX(c->y, c->mon->wy);
 	c->bw = borderpx;
 
 	wc.border_width = c->bw;
@@ -1531,6 +1530,7 @@ manage(Window w, XWindowAttributes *wa)
 	XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
 	configure(c); /* propagates border_width, if size doesn't change */
 	updatewindowtype(c);
+	updatesizehints(c);
 	updatewmhints(c);
 	{
 	  int format;
@@ -1554,7 +1554,7 @@ manage(Window w, XWindowAttributes *wa)
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
 	if (!c->isfloating)
-		c->isfloating = c->oldstate = t || c->isfixed;
+		c->isfloating = c->oldstate = trans != None || c->isfixed;
 	if (c->isfloating)
 		XRaiseWindow(dpy, c->win);
 	attach(c);
@@ -1969,8 +1969,8 @@ run(void)
     fds[i + 1].events = POLLIN;
     getcmd(i, NULL);
     if (blocks[i].interval) {
-     maxinterval = MAX(blocks[i].interval, maxinterval);
-     sleepinterval = gcd(blocks[i].interval, sleepinterval);
+      maxinterval = MAX(blocks[i].interval, maxinterval);
+      sleepinterval = gcd(blocks[i].interval, sleepinterval);
     }
   }
   
@@ -2254,12 +2254,12 @@ setup(void)
 	setsignal(SIGCHLD, sigchld); /* zombies */
 	setsignal(SIGALRM, sigalrm); /* timer */
 
-	//#ifdef __linux__
+	#ifdef __linux__
 	/* handle defined real time signals (linux only) */
 	for (i = 0; i < LENGTH(blocks); i++)
 	  if (blocks[i].signal)
 	    setsignal(SIGRTMIN + blocks[i].signal, getsigcmds);
-        //#endif /* __linux__ */
+        #endif /* __linux__ */
 
 	/* pid as an enviromental variable */
 	char envpid[16];
@@ -2407,6 +2407,8 @@ sigalrm(int unused)
 void
 sigchld(int unused)
 {
+  if (signal(SIGCHLD, sigchld) == SIG_ERR)
+    die("can't install SIGCHLD handler:");
   while (0 < waitpid(-1, NULL, WNOHANG));
 }
 
