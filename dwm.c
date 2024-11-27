@@ -292,6 +292,7 @@ static void setsignal(int sig, void (*handler)(int sig));
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigalrm(int unused);
+static void sigchld(int unused);
 static void sighup(int unused);
 static void sigterm(int unused);
 static void spawn(const Arg *arg);
@@ -1310,41 +1311,76 @@ getsigcmds(int signal)
     if (blocks[i].signal == sig)
       getcmd(i, NULL);
 }
-
+int
 getstatus(int width)
 {
-  int i, len, all = width - getsystraywidth(), delimlen = TEXTW(delimiter) - lrpad;
-  char fgcol[8];
-                               /* fg           bg */
-  const char *cols[8] =   { fgcol, colors[SchemeStatus][ColBg] };
-  //uncomment to inverse the colors
-  //const char *cols[8] =         { colors[SchemeStatus][ColBg], fgcol };
+    int i, len, all = width - getsystraywidth(), delimlen = TEXTW(delimiter) - lrpad;
+    char fgcol[8];
+    /* fg           bg */
+    char *cols[8] = { fgcol, colors[SchemeStatus][ColBg] };
+    // Uncomment to inverse the colors
+    // char *cols[8] = { colors[SchemeStatus][ColBg], fgcol };
 
-  #if INVERSED
-  for (i = 0; i < LENGTH(blocks); i++)
-  #else
-  for (i = LENGTH(blocks) - 1; i >= 0; i--)
-  #endif /* INVERSED */
-  {
-    if (*blockoutput[i] == '\0') /* ignore command that output NULL or '\0' */
-      continue;
-    strncpy(fgcol, blocks[i].color, 8);
-    /* re-load the scheme with the new colors */
-    scheme[SchemeStatus] = drw_scm_create(drw, cols, 3);
-    drw_setscheme(drw, scheme[SchemeStatus]); /* 're-set' the scheme */
-    len = TEXTW(blockoutput[i]) - lrpad;
-    all -= len;
-    drw_text(drw, all, 0, len, bh, 0, blockoutput[i], 0);
-    /* draw delimiter */
-    if (*delimiter == '\0') /* ignore no delimiter */
-      continue;
-    drw_setscheme(drw, scheme[SchemeNorm]);
-    all -= delimlen;
-    drw_text(drw, all, 0, delimlen, bh, 0, delimiter, 0);
-  }
+    #if INVERSED
+    for (i = 0; i < LENGTH(blocks); i++)
+    #else
+    for (i = LENGTH(blocks) - 1; i >= 0; i--)
+    #endif /* INVERSED */
+    {
+        if (*blockoutput[i] == '\0') /* ignore command that output NULL or '\0' */
+            continue;
+        strncpy(fgcol, blocks[i].color, 8);
+        /* re-load the scheme with the new colors */
+        scheme[SchemeStatus] = drw_scm_create(drw, cols, 3);
+        drw_setscheme(drw, scheme[SchemeStatus]); /* 're-set' the scheme */
+        len = TEXTW(blockoutput[i]) - lrpad;
+        all -= len;
+        drw_text(drw, all, 0, len, bh, 0, blockoutput[i], 0);
+        /* draw delimiter */
+        if (*delimiter == '\0') /* ignore no delimiter */
+            continue;
+        drw_setscheme(drw, scheme[SchemeNorm]);
+        all -= delimlen;
+        drw_text(drw, all, 0, delimlen, bh, 0, delimiter, 0);
+    }
 
-  return stsw = width - all;
+    return stsw = width - all;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int
 gcd(int a, int b)
