@@ -292,7 +292,6 @@ static void setsignal(int sig, void (*handler)(int sig));
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigalrm(int unused);
-static void sigchld(int unused);
 static void sighup(int unused);
 static void sigterm(int unused);
 static void spawn(const Arg *arg);
@@ -347,6 +346,7 @@ static pid_t winpid(Window w);
 /* variables */
 static Systray *systray =  NULL;
 static const char broken[] = "broken";
+static char stext[256];
 static unsigned int blocknum; /* blocks idx in mouse click */
 static unsigned int stsw = 0; /* status width */
 static unsigned int sleepinterval = 0, maxinterval = 0, count = 0;
@@ -626,7 +626,7 @@ buttonpress(XEvent *e)
 			} else if (ev->x < x + TEXTW(selmon->ltsymbol))
 				click = ClkLtSymbol;
 // else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad)) {
-			else if (ev->x > (x = selmon->ww - stsw)) {
+			else if (ev->x > (x = selmon->ww - stsw + lrpad)) {
 			  click = ClkStatusText;
 			  int len, i;
 			  
@@ -993,15 +993,15 @@ drawbar(Monitor *m)
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon || 1) { /* status is only drawn on selected monitor */
-		//drw_setscheme(drw, scheme[SchemeNorm]);
-		//drw_setscheme(drw, scheme[SchemeStatus]);
+		drw_setscheme(drw, scheme[SchemeNorm]);
+		drw_setscheme(drw, scheme[SchemeStatus]);
 		//sw = TEXTW(stext) - lrpad / 2 + 2; /* 2px right padding */
 		//drw_text(drw, m->ww - sw - stw, 0, sw, bh, lrpad / 2 - 2, stext, 0);
 	  sw = getstatus(m->ww);
 	}
 
 	resizebarwin(m);
-
+	
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags == 255 ? 0 : c->tags;
 		if (c->isurgent)
@@ -1334,7 +1334,6 @@ getstatus(int width)
     drw_setscheme(drw, scheme[SchemeStatus]); /* 're-set' the scheme */
     len = TEXTW(blockoutput[i]) - lrpad;
     all -= len;
-    
     drw_text(drw, all, 0, len, bh, 0, blockoutput[i], 0);
     /* draw delimiter */
     if (*delimiter == '\0') /* ignore no delimiter */
@@ -2249,9 +2248,15 @@ setup(void)
 	int i;
 	XSetWindowAttributes wa;
 	Atom utf8string;
+  struct sigaction sa;
 
+  sigemptyset(&sa.sa_mask);
+  sa.sa_flags = SA_NOCLDSTOP | SA_NOCLDWAIT | SA_RESTART;
+  sa.sa_handler = SIG_IGN;
+  sigaction(SIGCHLD, &sa, NULL);
+  while (waitpid(-1, NULL, WNOHANG) > 0);
 	/* clean up any zombies immediately */
-	setsignal(SIGCHLD, sigchld); /* zombies */
+	//setsignal(SIGCHLD, sigchld); /* zombies */
 	setsignal(SIGALRM, sigalrm); /* timer */
 
 	#ifdef __linux__
@@ -2405,14 +2410,6 @@ sigalrm(int unused)
 }
 
 void
-sigchld(int unused)
-{
-  if (signal(SIGCHLD, sigchld) == SIG_ERR)
-    die("can't install SIGCHLD handler:");
-  while (0 < waitpid(-1, NULL, WNOHANG));
-}
-
-void
 sighup(int unused)
 {
 	Arg a = {.i = 1};
@@ -2430,10 +2427,15 @@ sigterm(int unused)
 void
 spawn(const Arg *arg)
 {
+  struct sigaction sa;
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
 		setsid();
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sa.sa_handler = SIG_DFL;
+    sigaction(SIGCHLD, &sa, NULL);
 		execvp(((char **)arg->v)[0], (char **)arg->v);
 		fprintf(stderr, "dwm: execvp %s", ((char **)arg->v)[0]);
 		perror(" failed");
@@ -2993,7 +2995,7 @@ updatesystray(void)
 	Client *i;
 	Monitor *m = systraytomon(NULL);
 	unsigned int x = m->mx + m->mw;
-	//unsigned int sw = TEXTW(stext) - lrpad + systrayspacing;
+	unsigned int sw = TEXTW(stext) - lrpad + systrayspacing;
 	unsigned int w = 1;
 
 	if (!showsystray)

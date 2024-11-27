@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx  = 2;        /* border pixel of windows */
+static unsigned int borderpx  = 1;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft = 0;    /* 0: systray in the right corner, >0: systray on left of status text */
@@ -11,7 +11,7 @@ static const int showsystray = 1;     /* 0 means no systray */
 static unsigned int gappih    = 20;       /* horiz inner gap between windows */
 static unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
+static unsigned int gappov    = 20;       /* vert outer gap between windows and screen edge */
 static int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static int showbar            = 1;        /* 0 means no bar */
@@ -19,7 +19,7 @@ static int topbar             = 1;        /* 0 means bottom bar */
 #define ICONSIZE 16   /* icon size */
 #define ICONSPACING 5 /* space between icon and title */
 static const char buttonbar[]       = "";
-static char *fonts[]          = { "JetBrains Mono:size=10:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true","FontAwesome:pixelsize=14:antialias=true:autohint=true", "siji:pixelsize=19:antialias=true:autohint=true", };
+static char *fonts[]          = { "JetBrains Mono:size=10:antialias=true:autohint=true", "NotoColorEmoji:pixelsize=14:antialias=true:autohint=true","FontAwesome:pixelsize=14:antialias=true:autohint=true", "siji:pixelsize=21:antialias=true:autohint=true", };
 static char normbgcolor[]           = "#1a1a1a"; /* "#222222"; */
 static char normbordercolor[]       = "#1a1a1a"; /* "#444444"; */
 static char normfgcolor[]           = "#d7d7d7"; /* "#bbbbbb"; */
@@ -62,15 +62,17 @@ static char *colors[][3]      = {
 
 static const Block blocks[] = {
        /* fg     command                               interval        signal */
-       { fore, "pacpackages",                        1,             8},
-       { fore, "srvstatus",                        10,             20},
-       { fore, "memory",                        5,             2},
-       { fore, "cpu",                        10,             3},
-       { fore, "echo $(cpubars)",                        1,             4},
-       { fore, "mailbox",                        180,             5},
-       { fore, "nettraf",                        1,             6},
-       { fore, "volume",                        0,             10},
-       { fore, "clock",                         60,           8},
+       { "#e6e6e6", "musicctl",                        0,             11},
+       { "#f05c7e", "pacpackages",                        1,             8},
+       { "#f05caf", "srvstatus",                        60,             20},
+       { "#47b7e5", "memory",                        5,             2},
+       { "#f84545", "cpu",                        10,             3},
+       { "#dd5a1d", "echo $(cpubars)",                        1,             4},
+       { "#5cdaf0", "mailbox",                        180,             5},
+       //{ "#ff6600", "donations",         3600,                15},
+       { "#2fbe48", "nettraf",                        1,             6},
+       { "#d9e547", "volume",                        0,             10},
+       { "#47e5ac", "clock",                         60,           9},
        
 };
 
@@ -92,11 +94,11 @@ const char *spcmd3[] = { "virt-manager", NULL };
 const char *spcmd4[] = { "java", "-jar", "~/.local/bin/burploader.jar", NULL };
 const char *spcmd5[] = { "st", "-n", "spncmpcpp", "-f" "monospace:size=11", "-g", "120x20", "-e", "ncmpcpp", NULL };
 const char *spcmd6[] = { "wireshark", NULL };
-const char *spcmd7[] = { "thunar", NULL };
+const char *spcmd7[] = { "dolphin", NULL };
 const char *spcmd8[] = { "st", "-n", "spneo", "-g", "150x30", "-e", "neomutt", NULL };
 const char *spcmd9[] = { "telegram-desktop", NULL };
 const char *spcmd10[] = { "obsidian", NULL };
-const char *spcmd11[] = { "whatsapp-nativefier", NULL }; // whatsapp
+const char *spcmd11[] = { "zapzap", NULL }; // whatsapp
 const char *spcmd12[] = { "crow", NULL };
 const char *spcmd13[] = { "st", "-n", "splf", "-g", "150x30", "-e","lfub" };
 const char *spcmd14[] = { "keepassxc", NULL };
@@ -135,20 +137,16 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   isterminal noswallow monitor */
 	{ "St",       NULL,       NULL,       0,            0,           1,         0,        -1 },
 	{ NULL,       "St",       NULL,       0,            0,           1,         0,        -1 },
-	/* { "Virt-manager", NULL, NULL, 0, 1, 0, 0, -1 }, */
-	{ "Steam", NULL, NULL, 1 << 3, 0, 0, 0, -1 },
 	{ "mpv", NULL, NULL, 0, 1, 0, 0, -1 },
 	{ NULL,      "spterm",    NULL,		    SPTAG(0),     1,           1,         0,        -1 },
 	{ NULL,      "spcalc",    NULL,		    SPTAG(1),     1,           1,         0,        -1 },
-	/* { NULL,      "virt-manager",    NULL,	    SPTAG(2),     1,           1,         0,        -1 }, */
 	{ NULL,      "burp-StartBurp",    NULL,		    SPTAG(3),     1,           1,         0,        -1 },
 	{ NULL,      "spncmpcpp",    NULL,		    SPTAG(4),     1,           1,         0,        -1 },
 	{ NULL,      "wireshark",    NULL,		    SPTAG(5),     1,           1,         0,        -1 },
-	{ "Thunar",      NULL,    NULL,		    SPTAG(6),     1,           1,         0,        -1 },
+	{ NULL,      "dolphin",    NULL,		    SPTAG(6),     1,           1,         0,        -1 },
 	{ NULL,      "spneo",    NULL,		    SPTAG(7),     1,           1,         0,        -1 },
-	{ NULL,      "telegram-desktop",    NULL,		    SPTAG(8),     1,           1,         0,        -1 },
 	{ NULL,      "obsidian",    NULL,		    SPTAG(9),     1,           1,         0,        -1 },
-	{ NULL,      "whatsapp-nativefier-d40211",    NULL,		    SPTAG(10),     1,           1,         0,        -1 },
+	{ NULL,      "zapzap",    NULL,		    SPTAG(10),     1,           1,         0,        -1 },
 	{ NULL,      "crow",    NULL,		    SPTAG(11),     1,           1,         0,        -1 },
 	{ NULL,      "splf",    NULL,		    SPTAG(12),     1,           1,         0,        -1 },
 	{ NULL,      "keepassxc", NULL,		    SPTAG(13),     1,           1,         0,        -1 },
@@ -275,12 +273,12 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[1]} },
 	{ MODKEY,			XK_o, togglescratch, {.ui = 9} },
 	{ MODKEY|ShiftMask,		XK_o,		incnmaster,     {.i = -1 } },
-	{ MODKEY,			XK_p,			spawn,		SHCMD("playerctl -p mpd play-pause") },
-	{ MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("playerctl -p spotify play-pause") },
+	{ MODKEY,			XK_p,			spawn,		SHCMD("playerctl -p mpd play-pause;") },
+	{ MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("playerctl -p spotify play-pause; kill -45 $(pidof dwm)") },
 	{ MODKEY,			XK_bracketleft,		spawn,		SHCMD("playerctl -p mpd position 10-") },
-	{ MODKEY|ShiftMask,		XK_bracketleft,		spawn,		SHCMD("playerctl -p spotify position 10-") },
+	{ MODKEY|ShiftMask,		XK_bracketleft,		spawn,		SHCMD("playerctl -p spotify position 10-; kill -45 $(pidof dwm)") },
 	{ MODKEY,			XK_bracketright,	spawn,		SHCMD("playerctl -p mpd position 10+") },
-	{ MODKEY|ShiftMask,		XK_bracketright,	spawn,		SHCMD("playerctl -p spotify position 10+") },
+	{ MODKEY|ShiftMask,		XK_bracketright,	spawn,		SHCMD("playerctl -p spotify position 10+; kill -45 $(pidof dwm)") },
 	{ MODKEY,			XK_backslash,		view,		{0} },
 	/* { MODKEY|ShiftMask,		XK_backslash,		spawn,		SHCMD("") }, */
 	/* { MODKEY,			XK_a, togglescratch, {.ui = 10} }, */
@@ -308,7 +306,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_z,		incrgaps,	{.i = -1 } },
 	/* { MODKEY,			XK_x,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_x, togglescratch, {.ui = 10} },
-	{ MODKEY|ShiftMask,		XK_x, spawn, SHCMD("betterlockscreen -l") },
+	{ MODKEY|ShiftMask,		XK_x, incrgaps, {.i = +1 } },
 	{ MODKEY,			XK_c,		spawn,		SHCMD("st -e bc -l") },
 	/* { MODKEY|ShiftMask,		XK_c,		togglescratch, {.ui = 9 } }, */
 	{ MODKEY,			XK_v,		spawn,		SHCMD("virt-manager") },
@@ -320,9 +318,9 @@ static const Key keys[] = {
 	{ MODKEY,			XK_m,		togglescratch,		{.ui = 15} },
 	{ MODKEY|ShiftMask,		XK_m,		spawn,		SHCMD("pamixer -t") },
 	{ MODKEY,			XK_comma,	spawn,		SHCMD("playerctl -p mpd previous") },
-	{ MODKEY|ShiftMask,		XK_comma,	spawn,		SHCMD("playerctl -p spotify previous") },
+	{ MODKEY|ShiftMask,		XK_comma,	spawn,		SHCMD("playerctl -p spotify previous; kill -45 $(pidof dwm)") },
 	{ MODKEY,			XK_period,	spawn,		SHCMD("playerctl -p mpd next") },
-	{ MODKEY|ShiftMask,		XK_period,	spawn,		SHCMD("playerctl -p spotify next") },
+	{ MODKEY|ShiftMask,		XK_period,	spawn,		SHCMD("playerctl -p spotify next; kill -45 $(pidof dwm)") },
 	{ MODKEY,			XK_Left,	focusmon,	{.i = -1 } },
 	{ MODKEY|ShiftMask,		XK_Left,	tagmon,		{.i = -1 } },
 	{ MODKEY,			XK_Right,	focusmon,	{.i = +1 } },
